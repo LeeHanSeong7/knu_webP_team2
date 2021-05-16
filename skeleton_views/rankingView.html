@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .board {
+                display: flex;
+                flex-direction: row;
+            }
+            .list {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class="title">RANKING</h1>
+        <div class="board">
+            <div class="single list">
+                <h2>single high score</h2>
+                <script>
+                    let scoreList=[
+                        ['user1',100],['user2',90],['user3',80],
+                    ]
+                    scoreList.forEach(e=>{
+                        document.writeln(`
+                        <div>${e[0]}: ${e[1]}</div>
+                        `);
+                    });
+                </script>
+            </div>
+            <div class="versus list">
+                <h2>versus win rate</h2>
+                <script>
+                    let rateList=[
+                        ['user1',60],['user2',50],['user3',40],
+                    ]
+                    rateList.forEach(e=>{
+                        document.writeln(`
+                        <div>${e[0]}: ${e[1]}%</div>
+                        `);
+                    });
+                </script>
+            </div>
+        </div>
+        <input type="button" name="back" id="backBtn" value="back">
+    </body>
+</html>
