@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/LeeHanSeong7/knu_webP_team2/issues"
   },
-  "homepage": "https://github.com/LeeHanSeong7/knu_webP_team2#readme"
+  "homepage": "https://github.com/LeeHanSeong7/knu_webP_team2#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
