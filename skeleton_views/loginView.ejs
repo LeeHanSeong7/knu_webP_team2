@@ -20,21 +20,15 @@
 </head>
 
 <body>
+    <%- include('../views/scripts') -%>
     <div class="box">
         Login
-        <form>
-            <br/>
-            <div class="id_psw">
-                ID : &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="id" size="14">
-                <br/> Password : <input type="password" name="psw" size="14">
-                <br/>
-            </div>
-        </form>
         <br/>
+        ID : <input type="text" name="id" size="14">
         <br/>
-        <a href="/lobby">
-            <input type="button" value="Login">
-        </a>
+        Password : <input type="password" name="psw" size="14">
+        <br/>
+        <input type="button" value="Login" onclick="loginOnclick(event)">
         <a href="/signup">
             <input type="button" value="signup">
         </a>

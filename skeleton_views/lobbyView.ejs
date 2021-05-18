@@ -16,14 +16,11 @@
 </head>
 
 <body>
+    <%- include('../views/scripts') -%>
     <%- include('./components/navbar') -%>
     <div style="text-align: center;">
-        <a href="/game1p">
-            <input class="StartButton 1P" type="button" name="Gam Start!!" value="GameStart1p">
-        </a>
-        <a href="/game2p">
-            <input class="StartButton 2P" type="button" name="Gam Start!!" value="GameStart2p">
-        </a>
+        <input class="StartButton 1P" type="button" name="Game Start!!" value="GameStart1p" onclick="game1pOnclick()">
+        <input class="StartButton 2P" type="button" name="Game Start!!" value="GameStart2p" onclick="game2pOnclick()">
     </div>
 
 </body>

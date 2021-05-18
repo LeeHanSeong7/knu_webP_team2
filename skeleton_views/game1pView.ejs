@@ -39,6 +39,7 @@
 </head>
 
 <body>
+    <%- include('../views/scripts') -%>
     <div>
             <div>
                 <span class="score">score 0</span>
@@ -48,10 +49,7 @@
             <div>
                 <button>retry</button>
                 <button>setting</button>
-                <a href="/lobby">
-                    <button>quit</button>
-
-                </a>
+                <button onclick="gameQuitOnclick()">quit</button>
             </div>
     </div>
 </body>
