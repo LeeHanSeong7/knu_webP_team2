@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .title {
+            text-align: center;
+        }
+        
+        .StartButton {
+            width: 200px;
+            height: 100px;
+        }
+    </style>
+    <title>LOBBY</title>
+</head>
+
+<body>
+    <%- include('./components/navbar') -%>
+    <div style="text-align: center;">
+        <a href="/game1p">
+            <input class="StartButton 1P" type="button" name="Gam Start!!" value="GameStart1p">
+        </a>
+        <a href="/game2p">
+            <input class="StartButton 2P" type="button" name="Gam Start!!" value="GameStart2p">
+        </a>
+    </div>
+
+</body>
+
+</html>
