@@ -1,5 +1,5 @@
 const config = require('../testConfig');
 
 module.exports = (req,res) => {
-    res.render(config.viewPath+'signupView.ejs');
+    res.render(config.viewPath+'signUpView.ejs');
 }
