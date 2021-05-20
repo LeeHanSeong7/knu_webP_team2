@@ -1,17 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose')
 const app = new express();
 
 const expressSession = require('express-session');
 app.use(expressSession({
     secret: 'keyboard cat'
 }));
-
-mongoose.connect('mongodb+srv://webp2:tetris@tetris-cluster.lgfsy.mongodb.net/data', {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true    
-});
 
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
