@@ -22,13 +22,17 @@
 <body>
     <%- include('../views/scripts') -%>
     <div class="box">
-        Login
-        <br/>
-        ID : <input type="text" name="id" size="14">
-        <br/>
-        Password : <input type="password" name="psw" size="14">
-        <br/>
-        <input type="button" value="Login" onclick="loginOnclick(event)">
+        <form action="/auth/login" method="POST">
+            Login
+            <div class="id_psw">
+                ID : 
+                <input type="text" name="id" size="14">
+                <br>
+                Password : 
+                <input type="password" name="pw" size="14">
+            </div>
+            <input type="submit" value="login"></input>
+        </form>
         <a href="/signUp">
             <input type="button" value="signUp">
         </a>

@@ -22,7 +22,22 @@
         <input class="StartButton 1P" type="button" name="Game Start!!" value="GameStart1p" onclick="game1pOnclick()">
         <input class="StartButton 2P" type="button" name="Game Start!!" value="GameStart2p" onclick="game2pOnclick()">
     </div>
-
+    <div>
+        <script>
+            async function getList(){
+                let userlist;
+                await fetch("/user/list", {method: 'POST'})
+                            .then(res => userlist=res.json())
+                            .catch(error => console.error('Error: ', error));
+                return userlist;
+            }
+            async function test(){
+                const list = await getList();
+                console.log(list);
+            }
+            test();
+        </script>
+    </div>
 </body>
 
 </html>

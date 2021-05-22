@@ -1,5 +1,3 @@
 const userList = [];
 
-module.exports = {
-    userList,
-}
+module.exports = {userList};

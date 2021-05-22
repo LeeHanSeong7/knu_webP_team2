@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('./dataObject/DBObject');
 const app = new express();
 
 const expressSession = require('express-session');
@@ -41,4 +42,12 @@ app.get('/signUp',controllers.signUp);
 app.get('/status',controllers.status);
 app.post('/signUp/store', controllers.storeUser);
 
-
+addAuthControl(app);
+addUserControl(app);
+//
+function addAuthControl(expressApp){
+    expressApp.post('/auth/login',require('./controllers/Authetication/tryLogin'));
+}
+function addUserControl(expressApp){
+    expressApp.post('/user/list',require('./controllers/User/userList'));
+}

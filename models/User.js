@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt')
- 
+
 const UserSchema = new Schema({  
     username: { // pass in config object. and put in validation rules 
       type: String,
@@ -11,6 +11,16 @@ const UserSchema = new Schema({
     password: {
       type: String,
       required: true
+    },
+    state: {
+      type: String, 
+      required: true,
+      default: "logout"
+    },
+    history: {
+      type: Number,
+      required: true,
+      default: 0
     }
   });
 
