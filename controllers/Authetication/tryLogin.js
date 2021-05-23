@@ -3,13 +3,19 @@ const authFunc = require('./authModule');
 
 module.exports = async (req,res) => {
     const {id,pw} = req.body;
-    const isExise = await authFunc.tryAuth(id,pw);
-    if (isExise==true){
-        userList.push(id);
-        req.session.id = id;
-        res.redirect('/lobby');
+    if (userList.includes(id) == true){
+        res.redirect('/');
     }
     else{
-        res.redirect('/');
+        const isExise = await authFunc.tryAuth(id,pw);
+        if (isExise==true){
+            userList.push(id);
+            req.session.userid = id;
+            req.session.status = "lobby";
+            res.redirect('/lobby');
+        }
+        else{
+            res.redirect('/');
+        }
     }
 }

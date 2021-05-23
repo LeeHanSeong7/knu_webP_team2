@@ -21,6 +21,9 @@ const controllers = {
     "status" : require('./controllers/status'),
     "storeUser" : require('./controllers/storeUser'),
 }
+const MW = {
+    "session" : require('./middleware/sessionChecker'),
+}
 
 let port = process.env.PORT;
 if (port == null || port == ""){
@@ -33,21 +36,26 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
 app.get('/',controllers.login);
-app.get('/lobby',controllers.lobby);
-app.get('/game/1p',controllers.game1p);
-app.get('/game/2p',controllers.game2p);
-app.get('/matchRecord',controllers.matchRecord);
-app.get('/ranking',controllers.ranking);
+app.get('/lobby',MW.session,controllers.lobby);
+app.get('/matchRecord',MW.session,controllers.matchRecord);
+app.get('/ranking',MW.session,controllers.ranking);
 app.get('/signUp',controllers.signUp);
-app.get('/status',controllers.status);
+app.get('/status',MW.session,controllers.status);
 app.post('/signUp/store', controllers.storeUser);
-
+app.get('/game/1p',MW.session,controllers.game1p);
+app.get('/game/2p',MW.session,controllers.game2p);
 addAuthControl(app);
 addUserControl(app);
+addGameControl(app);
 //
 function addAuthControl(expressApp){
     expressApp.post('/auth/login',require('./controllers/Authetication/tryLogin'));
 }
 function addUserControl(expressApp){
-    expressApp.post('/user/list',require('./controllers/User/userList'));
+    expressApp.post('/user/list',MW.session,require('./controllers/User/userList'));
+    expressApp.post('/user/mysession',MW.session,require('./controllers/User/mySession'));
+}
+function addGameControl(expressApp){
+    expressApp.post('/game/join',MW.session,require('./controllers/Game/joinGame'));
+    expressApp.get('/game/quit',MW.session,require('./controllers/Game/quitGame'));
 }
