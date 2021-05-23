@@ -58,4 +58,5 @@ function addUserControl(expressApp){
 function addGameControl(expressApp){
     expressApp.post('/game/join',MW.session,require('./controllers/Game/joinGame'));
     expressApp.get('/game/quit',MW.session,require('./controllers/Game/quitGame'));
+    expressApp.post('/game/ready',MW.session,require('./controllers/Game/readyGame'));
 }
