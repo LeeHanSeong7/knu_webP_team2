@@ -17,7 +17,12 @@ const UserSchema = new Schema({
       required: true,
       default: "logout"
     },
-    history: {
+    win: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    defeat: {
       type: Number,
       required: true,
       default: 0

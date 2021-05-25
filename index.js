@@ -19,7 +19,8 @@ const controllers = {
     "ranking" : require('./controllers/ranking'),
     "signUp" : require('./controllers/signUp'),
     "status" : require('./controllers/status'),
-    "storeUser" : require('./controllers/storeUser'),
+    "storeUser" : require('./controllers/User/storeUser'),
+    "showHistory" : require('./controllers/Record/showHistory')
 }
 const MW = {
     "session" : require('./middleware/sessionChecker'),
@@ -41,14 +42,15 @@ app.get('/matchRecord',MW.session,controllers.matchRecord);
 app.get('/ranking',MW.session,controllers.ranking);
 app.get('/signUp',controllers.signUp);
 app.get('/status',MW.session,controllers.status);
-app.post('/signUp/store', controllers.storeUser);
 app.get('/game/1p',MW.session,controllers.game1p);
 app.get('/game/2p',MW.session,controllers.game2p);
 addAuthControl(app);
 addUserControl(app);
 addGameControl(app);
+// addRecordControl(app);
 //
 function addAuthControl(expressApp){
+    expressApp.post('/signUp/store', controllers.storeUser);
     expressApp.post('/auth/login',require('./controllers/Authetication/tryLogin'));
 }
 function addUserControl(expressApp){
@@ -59,4 +61,7 @@ function addGameControl(expressApp){
     expressApp.post('/game/join',MW.session,require('./controllers/Game/joinGame'));
     expressApp.get('/game/quit',MW.session,require('./controllers/Game/quitGame'));
     expressApp.post('/game/ready',MW.session,require('./controllers/Game/readyGame'));
+}
+function addRecordControl(expressApp){
+    expressApp.get('/ranking/history', controllers.showHistory);
 }
