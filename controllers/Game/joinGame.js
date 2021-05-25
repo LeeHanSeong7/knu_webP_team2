@@ -25,7 +25,7 @@ module.exports = async (req,res) => {
             },100);
         }
         else{
-            let value = queue.pop();
+            let value = queue.shift();
             if (value == req.session.userid){
                 queue.push(value);
             }
