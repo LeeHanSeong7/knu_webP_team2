@@ -1,41 +1,46 @@
-const queue = require('../../dataObject/gameInfoObject').game2pQueue;
+const Rooms = require('../../dataObject/gameInfoObject').gameRooms;
+const newMatch = require('../../dataObject/gameInfoObject').newMatch;
+const getEmptyRoom = require('../../dataObject/gameInfoObject').getEmptyRoom;
+const deleteMatch = require('../../dataObject/gameInfoObject').deleteMatch;
 
 module.exports = async (req,res) => {
     let tryCount = 50;
+    const interval = 100;
     if (req.session.status == "lobby"){
-        if (queue.length == 0){
-            queue.push(req.session.userid);
+        let empty = getEmptyRoom(Rooms);
+        if (empty === false){
+            let matchId = newMatch(req.session.userid);
             let timerId = setInterval(()=>{
                 tryCount += -1;
-                if (tryCount == 0){
+                if (tryCount == 0 || Rooms[matchId] === undefined){
                     clearInterval(timerId);
+                    deleteMatch(matchId);
                     res.json({
                         "res" : "false",
                         "status" : req.session.status,
                     });
                 }
-                if (queue.length == 0){
+                else if (Rooms[matchId].checkFull() == true){
                     clearInterval(timerId);
-                    req.session.status = "ready";
+                    req.session.status = "gaming";
+                    req.session.matchId = matchId;
                     res.json({
                         "res" : "true",
                         "status" : req.session.status,
+                        "matchId" : req.session.matchId,
                     });
                 }
-            },100);
+            },interval);
         }
         else{
-            let value = queue.shift();
-            if (value == req.session.userid){
-                queue.push(value);
-            }
-            else{
-                req.session.status = "ready";
-                res.send({
-                    "res" : "true",
-                    "status" : req.session.status,
-                });
-            }
+            Rooms[empty].join(req.session.userid);
+            req.session.status = "gaming";
+            req.session.matchId = empty;
+            res.send({
+                "res" : "true",
+                "status" : req.session.status,
+                "matchId" : req.session.matchId,
+            });
         }
     }
     else{
