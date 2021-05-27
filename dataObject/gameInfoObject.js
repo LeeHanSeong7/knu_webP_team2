@@ -4,8 +4,10 @@ class match {
     constructor(startMem){
         this.members = [startMem];
         this.maxNum = 2;
-        this.gameInfo = {};
-        this.gameInfo[startMem] = null;
+        this.gameData = {};
+        this.gameData[startMem] = null;
+        this.lastConnect = {};
+        this.lastConnect[startMem] = new Date();
     };
     checkFull(){
         if (this.members.length == this.maxNum) return true;
@@ -13,7 +15,12 @@ class match {
     }
     join(newMem){
         this.members.push(newMem);
-        this.gameInfo[newMem] = null;
+        this.gameData[newMem] = null;
+        this.lastConnect[newMem] = new Date();
+    }
+    update(userid, gameData){
+        this.gameData[userid] = gameData;
+        this.lastConnect[userid] = new Date();
     }
     endGame(caller){
     }
@@ -45,8 +52,9 @@ function newMatch(startMem){
 function myRoom(userid){
     for(let i=0; i<gameRooms.length;i++){
         if (gameRooms[i] == undefined) continue;
-        gameRooms[i].members.includes(userid);
-        return i;
+        else if (gameRooms[i].members.includes(userid) == true){
+            return i;
+        }
     }
     return false;
 }

@@ -1,6 +1,7 @@
 const Rooms = require('../../dataObject/gameInfoObject').gameRooms;
 const myRoom = require('../../dataObject/gameInfoObject').myRoom;
 const deleteMatch = require('../../dataObject/gameInfoObject').deleteMatch;
+
 module.exports = (req,res) => {
     if (req.session.status == "gaming"){
         let room = myRoom(req.session.userid);

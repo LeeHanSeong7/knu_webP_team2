@@ -69,31 +69,49 @@
 
             (async ()=>{
                 let mysession = await fetch("/user/mysession", {method: 'POST'}); mysession = await mysession.json();
-                function failQueue(){
-                        alert("fail");
+                function failConnect(){
+                        alert("end connection");
                         gameQuitOnclick();
                 }
                 async function join(){
                     let res = await fetch('/game/join',{method:'POST'});
                     res = await res.json();
-                    console.log(res);
                     if (res["res"] == "true"){
                         textDiv.textContent = res["matchId"];
                         gaming();
                     }
-                    else{ failQueue(); }
+                    else{ failConnect(); }
                 }
                 async function gaming(){
-                    while(true){
+                    const interval = 100;
+                    let timerId = setInterval( async ()=>{
                         const body = {
-                            "text" : document.getElementById("my").textContent
+                            "text" : document.getElementById("my").value,
+                            "mysession" : mysession.userid
                         }
                         let res = await fetch('/game/update',{ 
                             'method' :'POST',
+                            'headers':{
+                                'Content-Type' : 'application/json',
+                            },
                             'body' : JSON.stringify(body),
                         });
-                        break;
-                    }
+                        res = await res.json();
+                        if (res["res"] == "true"){
+                            let gameData = res["gameData"];
+                            let key = Object.keys(gameData);
+                            if (key[0] == mysession.userid) 
+                                key = key[1];
+                            else{
+                                key = key[0];
+                            }
+                            textDiv.textContent = `${mysession.userid} -- ${Object.keys(gameData)[0]} , ${Object.keys(gameData)[1]} : ${gameData[key]['text']}`;
+                        }
+                        else{
+                            failConnect();
+                            clearInterval(timerId);
+                        }
+                    },interval);
                 }
                 textDiv.textContent = "waiting opponent...";
                 
