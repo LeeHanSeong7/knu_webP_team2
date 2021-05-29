@@ -5,7 +5,7 @@ async function playOnServer(callback, args, interval, waitTime){ // callback = ì
         res = await res.json();
         if (res["res"] == "true"){
             args[1] = {
-                "status":false,
+                "status":"queuing",
                 "meg" : "wait...opponent",
             };
             callback(args[1]);
@@ -13,8 +13,8 @@ async function playOnServer(callback, args, interval, waitTime){ // callback = ì
         }
         else{ 
             args[1] = {
-                "status":false,
-                "meg" : "fail to join",
+                "status":"join fail",
+                "meg" : "join fail",
             }; 
             callback(args[1]);
             return;
@@ -38,15 +38,15 @@ async function playOnServer(callback, args, interval, waitTime){ // callback = ì
                 if (myTime - targetTime < waitTime){
                     let gameData = res["gameData"];
                     args[1] = {
-                        "status":true,
-                        "meg" : "gaming",
+                        "status":"updated",
+                        "meg" : "updated",
                         "data":gameData[opponent]
                     };
                     callback(args[1]);
                 }
                 else{
                     args[1] = {
-                        "status":false,
+                        "status":"opponent disconnected",
                         "meg" : "opponent disconnected",
                     }; 
                     callback(args[1]);
@@ -55,7 +55,7 @@ async function playOnServer(callback, args, interval, waitTime){ // callback = ì
             }
             else{
                 args[1] = {
-                    "status":false,
+                    "status":"match ended",
                     "meg" : "match ended",
                 }; 
                 callback(args[1]);

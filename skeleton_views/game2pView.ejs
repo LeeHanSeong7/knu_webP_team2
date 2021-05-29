@@ -14,7 +14,6 @@
             margin-left: 5.5rem;
         }
 
-
         .level1 {
             position: relative;
             font-size: 24px;
@@ -59,14 +58,17 @@
 </head>
 
 <body>
+    <script src="/scripts/playOnServer.js"></script>
     <script>
         function gameQuitOnclick(){location.href="/game/quit";};
+
         const args = [{"text":"test"},null];
         playOnServer((res)=>{
                 console.log(res);
             },args,100,3000);
     </script>
-    <script src="/scripts/playOnServer.js"></script>
+
+    
     <button onclick="gameQuitOnclick()">quit</button>
 </body>
 
