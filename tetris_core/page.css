@@ -9,6 +9,36 @@ body {
     /*-webkit-text-size-adjust: none;  Fix iphone font size changing */
 }
 
+
+        #board_canvas {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1;
+        }
+        
+        #animated_canvas {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 3;
+        }
+        
+        #shadow_canvas {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 2;
+        }
+        
+        #score_check {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            font-family: Sans-serif;
+            font-size: 70px
+        }
+
 p {
     line-height: 1.5em;
 }
