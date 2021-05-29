@@ -2,15 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const HistorySchema = new Schema({
-    gameID: { 
-        type: String,
-        required: true,
-        unique: true
+    Date: {
+        type: Date,
+        default: Date.now,
+        required: true
     },
-    // Date: {
-    //     type: Date,
-    //     default: Date.now
-    // },
     player1: {
         type: String,
         required: true

@@ -20,7 +20,8 @@ const controllers = {
     "signUp" : require('./controllers/signUp'),
     "status" : require('./controllers/status'),
     "storeUser" : require('./controllers/User/storeUser'),
-    "showHistory" : require('./controllers/Record/showHistory')
+    "storeHistory" : require('./controllers/Record/storeHistory'),
+    "history" : require('./controllers/history')
 }
 const MW = {
     "session" : require('./middleware/sessionChecker'),
@@ -44,10 +45,11 @@ app.get('/signUp',controllers.signUp);
 app.get('/status',MW.session,controllers.status);
 app.get('/game/1p',MW.session,controllers.game1p);
 app.get('/game/2p',MW.session,controllers.game2p);
+app.get('/history',MW.session,controllers.history);
 addAuthControl(app);
 addUserControl(app);
 addGameControl(app);
-// addRecordControl(app);
+addRecordControl(app);
 //
 function addAuthControl(expressApp){
     expressApp.post('/signUp/store', controllers.storeUser);
@@ -63,5 +65,5 @@ function addGameControl(expressApp){
     expressApp.post('/game/ready',MW.session,require('./controllers/Game/readyGame'));
 }
 function addRecordControl(expressApp){
-    expressApp.get('/ranking/history', controllers.showHistory);
+    expressApp.post('/history/store', controllers.storeHistory);
 }
