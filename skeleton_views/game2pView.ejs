@@ -59,15 +59,14 @@
 </head>
 
 <body>
-    <script src="/scripts/playOnServer.js"></script>
-    <div id="container">
-        <script>
-            const args = [{"text":"test"},null];
-            playOnServer((res)=>{
+    <script>
+        function gameQuitOnclick(){location.href="/game/quit";};
+        const args = [{"text":"test"},null];
+        playOnServer((res)=>{
                 console.log(res);
             },args,100,3000);
-        </script>
-    </div>
+    </script>
+    <script src="/scripts/playOnServer.js"></script>
     <button onclick="gameQuitOnclick()">quit</button>
 </body>
 

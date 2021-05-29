@@ -1,6 +1,3 @@
-function gameQuitOnclick(){
-    location.href="/game/quit";
-}
 async function playOnServer(callback, args, interval, waitTime){ // callback = 인터벌 활성화마다 output으로 실행될 콜백함수, args=[input,output], interval = update interval, waitTime = opponent timeout
     let mysession = await fetch("/user/mysession", {method: 'POST'}); mysession = await mysession.json();
     async function join(){
