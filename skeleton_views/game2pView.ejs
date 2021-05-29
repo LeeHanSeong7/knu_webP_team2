@@ -63,10 +63,9 @@
     <div id="container">
         <script>
             const args = [{"text":"test"},null];
-            playOnServer(args,100,3000);
-            setInterval(() => {
-                console.log(args[1]);
-            }, 1000);
+            playOnServer((res)=>{
+                console.log(res);
+            },args,100,3000);
         </script>
     </div>
     <button onclick="gameQuitOnclick()">quit</button>
