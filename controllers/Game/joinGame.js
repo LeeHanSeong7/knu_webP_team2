@@ -4,7 +4,7 @@ const getEmptyRoom = require('../../dataObject/gameInfoObject').getEmptyRoom;
 const deleteMatch = require('../../dataObject/gameInfoObject').deleteMatch;
 
 module.exports = async (req,res) => {
-    let tryCount = 50;
+    let tryCount = 600;
     const interval = 100;
     if (req.session.status == "lobby"){
         let empty = getEmptyRoom(Rooms);

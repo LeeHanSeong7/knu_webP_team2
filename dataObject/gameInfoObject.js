@@ -24,6 +24,13 @@ class match {
     }
     endGame(caller){
     }
+    opponents(me){
+        const arr = this.members.slice();
+        const idx = arr.indexOf(me);
+        if (idx == 0) arr.shift();
+        else if(idx == 1) arr.pop();
+        return arr;
+    }
 }
 
 function getEmptyRoom(Rooms){

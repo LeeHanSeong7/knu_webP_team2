@@ -59,64 +59,14 @@
 </head>
 
 <body>
-    <%- include('../views/scripts') -%>
-    <div id="test">
-        <input type="text" value="test" id="my">
+    <script src="/scripts/playOnServer.js"></script>
+    <div id="container">
         <script>
-            const parent = document.getElementById("test");
-            let textDiv = document.createElement("div");
-            parent.appendChild(textDiv);
-
-            (async ()=>{
-                let mysession = await fetch("/user/mysession", {method: 'POST'}); mysession = await mysession.json();
-                function failConnect(){
-                        alert("end connection");
-                        gameQuitOnclick();
-                }
-                async function join(){
-                    let res = await fetch('/game/join',{method:'POST'});
-                    res = await res.json();
-                    if (res["res"] == "true"){
-                        textDiv.textContent = res["matchId"];
-                        gaming();
-                    }
-                    else{ failConnect(); }
-                }
-                async function gaming(){
-                    const interval = 100;
-                    let timerId = setInterval( async ()=>{
-                        const body = {
-                            "text" : document.getElementById("my").value,
-                            "mysession" : mysession.userid
-                        }
-                        let res = await fetch('/game/update',{ 
-                            'method' :'POST',
-                            'headers':{
-                                'Content-Type' : 'application/json',
-                            },
-                            'body' : JSON.stringify(body),
-                        });
-                        res = await res.json();
-                        if (res["res"] == "true"){
-                            let gameData = res["gameData"];
-                            let key = Object.keys(gameData);
-                            if (key[0] == mysession.userid) 
-                                key = key[1];
-                            else{
-                                key = key[0];
-                            }
-                            textDiv.textContent = `${mysession.userid} -- ${Object.keys(gameData)[0]} , ${Object.keys(gameData)[1]} : ${gameData[key]['text']}`;
-                        }
-                        else{
-                            failConnect();
-                            clearInterval(timerId);
-                        }
-                    },interval);
-                }
-                textDiv.textContent = "waiting opponent...";
-                
-                join();
-            })();
+            const args = [{"text":"test"},null];
+            playOnServer(args,100,3000);
+            setInterval(() => {
+                console.log(args[1]);
+            }, 1000);
         </script>
     </div>
     <button onclick="gameQuitOnclick()">quit</button>

@@ -27,7 +27,9 @@ module.exports = (req,res) => {
             res.json({
                 "res" : "true",
                 "status" : req.session.status,
+                "opponent" : match.opponents(req.session.userid)[0],
                 "gameData" : match.gameData,
+                "lastConnect" : match.lastConnect,
             });
         }
     }
