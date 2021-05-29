@@ -1,5 +1,4 @@
 var TETRIS = new function() { // namespacing
-
     function random_det(seed) {
         return function() {
             // Robert Jenkins' 32 bit integer hash function.
@@ -114,11 +113,7 @@ var TETRIS = new function() { // namespacing
         //ph.style.height = (yoff*2+ysize*24+gapsize*23)+"px";
         //ph.style.width = ((xoff*2 + xsize*10 + gapsize*9)+180)+"px";
 
-
         document.getElementById('instructions').style.marginLeft = (bc.width) + "px";
-
-
-
 
         // this is to set the absolute positioning in the center of the window.
         // note -- window.innerWidth/Height not supported by IE
@@ -1287,5 +1282,4 @@ var TETRIS = new function() { // namespacing
         score = 0;
     };
     this.scoreChangeCallback = function(cb) { scoreCallback = cb; };
-
 };

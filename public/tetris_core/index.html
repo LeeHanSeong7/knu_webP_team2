@@ -34,11 +34,17 @@
     <!-- score -->
     <div id="score_check"> <span id="score">0</span></div>
 
-
     <!-- pause -->
     <div id="instructions" style="position: relative">
         <div id='controls' style="float: left">
-            <input type='button' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value='Pause' style="font-size: 150%" /><br/>
+            <input type='button' onclick="
+                if (TETRIS.isPaused()) {
+                    TETRIS.unPause(); 
+                } 
+                else { 
+                    TETRIS.setPause(); 
+                }
+            " value='Pause' style="font-size: 150%" /><br/>
         </div>
     </div>
 </body>
