@@ -1,4 +1,19 @@
+// board        = 테트리스 판(compiled block 포함)(고정값)
+//drawboard -> drawbox -> drawbox2 를 통해 board 를 업데이트 및 id = boar_canvas에 표현
+
+//animPositionX = Moving block의 x 좌표(연속값)
+//animPositionY = Moving block의 y 좌표(연속값)
+//animRotation  = Moving block의 회전 정도(연속값)(rotation command 시 pi/2로 초기화(회전값) -> 점점 0에 수렴(고정))
+//unPause -> (moveDownIntervalFunc, animationUpdateIntervalFunc) 를 통해 위의 세가지를 업데이트
+//업데이트한 정보를 updatePiece-> drawPiece를 통해 id = animated_canvas에 표현
+
+
+//curPiece      = Moving block의 블록 종류 넘버(0 ~ 6)(상수값)
+//block이 fix되면 next() 함수의 generator()를 통해 업데이트
+
+//curRotation   = Moving block의 회전 넘버(0 ~ 3)(상수값)
 var TETRIS = new function() { // namespacing
+
 
     function random_det(seed) {
         return function() {
@@ -54,10 +69,14 @@ var TETRIS = new function() { // namespacing
         };
     }
 
-    var board = [];
+    var board = new Array(24);
     var i = 0;
-    for (i = 0; i < 240; i++) {
-        board[i] = 0;
+    var j = 0;
+    for (i = 0; i < 24; i++) {
+        board[i] = new Array(10);
+        for (j = 0; j < 10; j++) {
+            board[i][j] = 0;
+        }
     }
     var xoff = 8;
     var yoff = 8;
@@ -89,14 +108,17 @@ var TETRIS = new function() { // namespacing
 
     function drawBoard(boardArr, context) {
         var i;
+
         context.fillStyle = "#000";
         context.fillRect(0, 0, xoff * 2 + xsize * 10 + gapsize * 9, yoff * 2 + ysize * 24 + gapsize * 23);
         context.clearRect(xoff - bordersize, yoff - bordersize, (xsize + gapsize) * 10 - gapsize + bordersize * 2, (ysize + gapsize) * 24 - gapsize + bordersize * 2);
         context.strokeRect(xoff - .5, yoff - .5, (xsize + gapsize) * 10 - gapsize + 1, (ysize + gapsize) * 24 - gapsize + 1);
         context.fillStyle = "#888";
         context.fillRect(xoff, yoff, (xsize + gapsize) * 10 - gapsize, (ysize + gapsize) * 24 - gapsize);
-        for (i = 0; i < 240; i++) {
-            drawBox(i, board[i], context);
+        for (i = 0; i < 24; i++) {
+            for (j = 0; j < 10; j++) {
+                drawBox(i * 10 + j, board[i][j], context);
+            }
         }
     }
     var positionFromLeft = 0;
@@ -144,7 +166,7 @@ var TETRIS = new function() { // namespacing
             var j;
             var full = true;
             for (j = 0; j < 10; j++) {
-                if (!board[(startrow + i) * 10 + j]) full = false;
+                if (!board[startrow + i][j]) full = false;
             }
             if (full) {
                 numRowsCleared++;
@@ -158,11 +180,13 @@ var TETRIS = new function() { // namespacing
     // row is full
     function shiftDown(row) {
         var i;
-        for (i = row * 10 - 1; i >= 0; i--) {
-            board[i + 10] = board[i];
+        for (i = row - 1; i >= 0; i--) {
+            for (j = 0; j < 10; j++) {
+                board[i + 1][j] = board[i][j];
+            }
         }
         for (i = 0; i < 10; i++) {
-            board[i] = 0;
+            board[0][i] = 0;
         }
     }
 
@@ -646,7 +670,7 @@ var TETRIS = new function() { // namespacing
                 var pxi = pieceX + i;
                 var pyj = pieceY + j;
                 if (tetkji) {
-                    board[pyj * 10 + pxi] = tetkji;
+                    board[pyj][pxi] = tetkji;
                 }
             }
         }
@@ -669,7 +693,7 @@ var TETRIS = new function() { // namespacing
                     //document.getElementById('msg').innerHTML += "<br>pxi,pyj="+pxi+","+pyj+"i,j="+i+","+j+"tetkji="+tetkji;
                     return 1;
                 }
-                if (tetkji && board[pyj * 10 + pxi]) {
+                if (tetkji && board[pyj][pxi]) {
                     return 2;
                 }
             }
@@ -984,6 +1008,7 @@ var TETRIS = new function() { // namespacing
     var drawIndicators = false;
 
     function drawPiece(context) {
+        console.log(animPositionX + " " + animPositionY)
         var i, j;
         // drawing using geometry of current rotation 
         var tetk = tetrominos[curPiece][curRotation];
