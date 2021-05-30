@@ -28,9 +28,10 @@
     <script>
         function gameQuitOnclick(){location.href="/game/quit";};
 
+        let board = [];
         const args = [{"text":"test"},null];
         playOnServer((res)=>{
-                //console.log(res);
+            //console.log(res);
         },args,100,3000);
     </script>
     <!-- canvas -->
