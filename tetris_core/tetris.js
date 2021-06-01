@@ -1,17 +1,9 @@
-// board        = 테트리스 판(compiled block 포함)(고정값)
-//drawboard -> drawbox -> drawbox2 를 통해 board 를 업데이트 및 id = boar에 표현
+var board;
 
-//animPositionX = Moving block의 x 좌표(연속값)
-//animPositionY = Moving block의 y 좌표(연속값)
-//animRotation  = Moving block의 회전 정도(연속값)(rotation command 시 pi/2로 초기화(회전값) -> 점점 0에 수렴(고정))
-//unPause -> (moveDownIntervalFunc, animationUpdateIntervalFunc) 를 통해 위의 세가지를 업데이트
-//업데이트한 정보를 updatePiece-> drawPiece를 통해 id = animated에 표현
-
-
-//curPiece      = Moving block의 블록 종류 넘버(0 ~ 6)(상수값)
-//block이 fix되면 next() 함수의 generator()를 통해 업데이트
-
-//curRotation   = Moving block의 회전 넘버(0 ~ 3)(상수값)
+function DrawOpponent(opponent_board) {
+    var ctx1 = document.getElementById('opponent_board').getContext('2d');
+    drawBoard(opponent_board, ctx1);
+}
 
 function random_det(seed) {
     return function() {
@@ -67,7 +59,7 @@ function random_perm_single(seed) {
     };
 }
 
-var board = new Array(24);
+board = new Array(24);
 var i = 0;
 var j = 0;
 for (i = 0; i < 24; i++) {
@@ -124,20 +116,23 @@ var positionFromLeft = 0;
 function updateSizing() {
     xsize = ysize = Math.floor((window.innerHeight - 25 - yoff * 2 - 24 * gapsize) / 24.0);
     //gapsize = Math.floor((window.innerHeight - 150) / 300);
+    var oppo = document.getElementById('opponent_board');
     var bc = document.getElementById('player_board');
     var ac = document.getElementById('player_animated');
     var sc = document.getElementById('player_shadow');
     //var ph = document.getElementById('placeholder');
     var score_el = document.getElementById('score').parentNode;
-    bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
-    bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
+    oppo.width = bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
+    oppo.height = bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
+    oppo.style.left = window.innerWidth / 8 + 'px';
     //ph.style.height = (yoff*2+ysize*24+gapsize*23)+"px";
     //ph.style.width = ((xoff*2 + xsize*10 + gapsize*9)+180)+"px";
 
+    console.log('hello')
 
     // this is to set the absolute positioning in the center of the window.
     // note -- window.innerWidth/Height not supported by IE
-    positionFromLeft = 50; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
+    positionFromLeft = window.innerWidth / 10 + window.innerWidth / 5 + oppo.width; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
     bc.style.left = ac.style.left = sc.style.left = positionFromLeft + "px";
 
     document.getElementById('instructions').style.left = positionFromLeft + (bc.width) + "px";
