@@ -11,7 +11,7 @@ body {
 }
 
 #player {
-    left: 50%;
+    left: 100px;
 }
 
 #player_board {
@@ -31,23 +31,11 @@ body {
 
 #opponent {
     float: left;
-    visibility: hidden;
 }
 
 #opponent_board {
     position: absolute;
-    z-index: 1;
-}
-
-#opponent_animated {
-    position: absolute;
-    background-color: white;
     z-index: 3;
-}
-
-#opponent_shadow {
-    position: absolute;
-    z-index: 2;
 }
 
 #score_check {
