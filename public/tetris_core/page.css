@@ -1,4 +1,5 @@
 body {
+    overflow: hidden;
     font-family: 'Georgia', 'Arial', sans-serif;
     font-size: 100%;
     color: #B0B0B0;
@@ -9,32 +10,36 @@ body {
     /*-webkit-text-size-adjust: none;  Fix iphone font size changing */
 }
 
+#player {
+    left: 100px;
+}
 
-#board_canvas {
-    position: fixed;
-    left: 10px;
-    top: 10px;
+#player_board {
+    position: absolute;
     z-index: 1;
 }
 
-#animated_canvas {
-    position: fixed;
-    left: 10px;
-    top: 10px;
+#player_animated {
+    position: absolute;
     z-index: 3;
 }
 
-#shadow_canvas {
-    position: fixed;
-    left: 10px;
-    top: 10px;
+#player_shadow {
+    position: absolute;
     z-index: 2;
 }
 
+#opponent {
+    float: left;
+}
+
+#opponent_board {
+    position: absolute;
+    z-index: 3;
+}
+
 #score_check {
-    position: fixed;
-    left: 10px;
-    top: 10px;
+    position: absolute;
     font-family: Sans-serif;
     font-size: 70px
 }
@@ -261,7 +266,6 @@ div.currently ul {
 }
 
 #instructions {
-    margin-left: 400px;
     padding: 20px;
 }
 
@@ -282,7 +286,7 @@ input {
     background-color: #353535;
     border: solid #555555 2px;
     color: #b0b0b0;
-    margin: 3px;
+    left: 100px;
 }
 
 table {

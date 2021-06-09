@@ -21,30 +21,30 @@
     <script type='text/javascript'>
         TETRIS.setScoreIncreasing();
     </script>
+    <style></style>
 
 </head>
 
 
 <body>
     <!-- canvas -->
-    <canvas id="board_canvas" width="500" height="1200"></canvas>
-    <canvas id="shadow_canvas" width="500" height="1200"></canvas>
-    <canvas id="animated_canvas" width="500" height="1200"></canvas>
+    <div id="opponent">
+        <canvas id="opponent_board" width="500" height="1200"></canvas>
+    </div>
+    <div id="player">
+        <canvas id="player_board" width="500" height="1200"></canvas>
+        <canvas id="player_shadow" width="500" height="1200"></canvas>
+        <canvas id="player_animated" width="500" height="1200"></canvas>
+    </div>
 
     <!-- score -->
     <div id="score_check"> <span id="score">0</span></div>
 
+
     <!-- pause -->
     <div id="instructions" style="position: relative">
         <div id='controls' style="float: left">
-            <input type='button' onclick="
-                if (TETRIS.isPaused()) {
-                    TETRIS.unPause(); 
-                } 
-                else { 
-                    TETRIS.setPause(); 
-                }
-            " value='Pause' style="font-size: 150%" /><br/>
+            <input type='button' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value='Pause' style="font-size: 150%" /><br/>
         </div>
     </div>
 </body>

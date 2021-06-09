@@ -21,41 +21,70 @@
     <script type='text/javascript'>
         TETRIS.setScoreIncreasing();
     </script>
-</head>
 
-<body>
     <script src="/scripts/playOnServer.js"></script>
     <script>
         function gameQuitOnclick(){location.href="/game/quit";};
+    </script>
+</head>
 
-        let board = [];
-        const args = [{"text":"test"},null];
-        playOnServer((res)=>{
-            //console.log(res);
+<body>
+    <div class="watingDiv">
+        joining...
+        <button onclick="gameQuitOnclick()">quit</button>
+    </div>
+    <div class="gameDiv">
+        <!-- canvas -->
+        <div id="opponent">
+            <canvas id="opponent_board" width="500" height="1200"></canvas>
+        </div>
+        <div id="player">
+            <canvas id="player_board" width="500" height="1200"></canvas>
+            <canvas id="player_shadow" width="500" height="1200"></canvas>
+            <canvas id="player_animated" width="500" height="1200"></canvas>
+        </div>
+
+        <!-- score -->
+        <div id="score_check"> <span id="score">0</span></div>
+
+        <!-- pause -->
+        <div id="instructions" style="position: relative">
+            <div id='controls' style="float: left">
+                <input type='button' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value='Pause' style="font-size: 150%" /><br/>
+            </div>
+        </div>
+        <button onclick="gameQuitOnclick()">quit</button>
+    </div>
+    <script>
+        let watingDiv = document.getElementsByClassName('watingDiv')[0];
+        let gameDiv = document.getElementsByClassName('gameDiv')[0];
+        const args = [{"board" : board},null];
+        gameDiv.style.display = 'none';
+        playOnServer((callback_args)=>{
+            switch(callback_args['status']){
+                case ('gaming'):
+                    watingDiv.innerHTML = callback_args['msg'];
+                    watingDiv.style.display = 'none';
+                    gameDiv.style.display = 'block';
+                     break;
+                case ('join fail'):
+                    gameQuitOnclick()
+                     break;
+                case ('updated'):
+                    DrawOpponent(callback_args['data']['board']);
+                    args[0] = {"board" : board};
+                     break;
+                case ('opponent disconnected'):
+                    gameQuitOnclick()
+                     break;
+                case ('match ended'):
+                    gameQuitOnclick()
+                     break;
+                default:
+                    break;         
+            }
         },args,100,3000);
     </script>
-    <!-- canvas -->
-    <canvas id="board_canvas" width="500" height="1200"></canvas>
-    <canvas id="shadow_canvas" width="500" height="1200"></canvas>
-    <canvas id="animated_canvas" width="500" height="1200"></canvas>
-
-    <!-- score -->
-    <div id="score_check"> <span id="score">0</span></div>
-
-    <!-- pause -->
-    <div id="instructions" style="position: relative">
-        <div id='controls' style="float: left">
-            <input type='button' onclick="
-                if (TETRIS.isPaused()) {
-                    TETRIS.unPause(); 
-                } 
-                else { 
-                    TETRIS.setPause(); 
-                }
-            " value='Pause' style="font-size: 150%" /><br/>
-        </div>
-    </div>
-    <button onclick="gameQuitOnclick()">quit</button>
 </body>
 
 </html>
