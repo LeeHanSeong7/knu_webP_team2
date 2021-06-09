@@ -1,6 +1,7 @@
 const Rooms = require('../../dataObject/gameInfoObject').gameRooms;
 const myRoom = require('../../dataObject/gameInfoObject').myRoom;
 const deleteMatch = require('../../dataObject/gameInfoObject').deleteMatch;
+const userList = require('../../dataObject/userlistObject');
 
 module.exports = (req,res) => {
     let matchId = myRoom(req.session.userid);
@@ -24,12 +25,13 @@ module.exports = (req,res) => {
         }
         else{
             match.update(req.session.userid, req.body);
+            userList.touchUser(req.session.userid);
             res.json({
                 "res" : "true",
                 "status" : req.session.status,
                 "opponent" : match.opponents(req.session.userid)[0],
                 "gameData" : match.gameData,
-                "lastConnect" : match.lastConnect,
+                "lastConnect" : userList.lastConnect,
             });
         }
     }

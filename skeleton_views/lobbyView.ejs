@@ -13,14 +13,34 @@
         }
     </style>
     <title>LOBBY</title>
+    <script>
+            function game1pOnclick(){
+                location.href="/game/1p";
+            }
+
+            function game2pOnclick(){
+                location.href="/game/2p";
+            }
+    </script>
 </head>
 
 <body>
-    <%- include('../views/scripts') -%>
     <%- include('./components/navbar') -%>
     <div style="text-align: center;">
         <input class="StartButton 1P" type="button" name="Game Start!!" value="GameStart1p" onclick="game1pOnclick()">
         <input class="StartButton 2P" type="button" name="Game Start!!" value="GameStart2p" onclick="game2pOnclick()">
+    </div>
+    <div style="
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+    ">
+        <div style="flex : 2">
+            <%- include('./components/chatting') -%>
+        </div>
+        <div style="flex : 1">
+            <%- include('./components/userlist') -%>
+        </div>
     </div>
 </body>
 

@@ -6,8 +6,6 @@ class match {
         this.maxNum = 2;
         this.gameData = {};
         this.gameData[startMem] = null;
-        this.lastConnect = {};
-        this.lastConnect[startMem] = new Date();
     };
     checkFull(){
         if (this.members.length == this.maxNum) return true;
@@ -16,11 +14,9 @@ class match {
     join(newMem){
         this.members.push(newMem);
         this.gameData[newMem] = null;
-        this.lastConnect[newMem] = new Date();
     }
     update(userid, gameData){
         this.gameData[userid] = gameData;
-        this.lastConnect[userid] = new Date();
     }
     endGame(caller){
     }

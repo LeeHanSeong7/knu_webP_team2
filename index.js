@@ -55,6 +55,7 @@ function addAuthControl(expressApp){
 }
 function addUserControl(expressApp){
     expressApp.post('/user/list',MW.session,require('./controllers/User/userList'));
+    expressApp.get('/user/logout',MW.session,require('./controllers/User/logout'));
     expressApp.post('/user/mysession',MW.session,require('./controllers/User/mySession'));
 }
 function addGameControl(expressApp){

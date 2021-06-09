@@ -1,7 +1,7 @@
 const userList = require('../../dataObject/userlistObject');
 
 module.exports = (req,res) => {
-    res.json({
-        "data": userList.userList(),
-    });
+    userList.logout(req.session.userid);
+    req.session = null;
+    res.redirect('/');
 }
