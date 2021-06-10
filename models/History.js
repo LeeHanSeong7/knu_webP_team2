@@ -2,29 +2,29 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const HistorySchema = new Schema({
-    gameID: { 
+    Date: {
+        type: Date,
+        default: Date.now,
+        required: true
+    },
+    winner: {
         type: String,
         required: true,
-        unique: true
+        default: "None"
     },
-    // Date: {
-    //     type: Date,
-    //     default: Date.now
-    // },
-    player1: {
+    loser: {
         type: String,
-        required: true
+        default: "None"
     },
-    player2: {
-        type: String
+    winnerScore: {
+        type: Number,
+        required: true,
+        default: 0
     },
-    score: {
-        type: String,
-        required: true
-    },
-    level: {
-        type: String,
-        require: true
+    loserScore: {
+        type: Number,
+        require: true,
+        default: 0
     }
 });
 

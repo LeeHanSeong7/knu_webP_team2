@@ -13,34 +13,31 @@
     </head>
     <body>
         <%- include('./components/navbar') -%>
-        <div class="board">
-            <div class="single list">
-                <h2>single high score</h2>
-                <script>
-                    let scoreList=[
-                        ['user1',100],['user2',90],['user3',80],
-                    ]
-                    scoreList.forEach(e=>{
-                        document.writeln(`
-                        <div>${e[0]}: ${e[1]}</div>
-                        `);
-                    });
-                </script>
+            <div>
+                <div>
+                    <h2>single high score</h2>
+                    <% if(histories.length > 10) histories.length = 10; %>
+                    <% for (var i=0; i < histories.length; i++) { %>
+                        <a>
+                            Player : <%= histories[i].winner %>, 
+                            Score : <%= histories[i].winnerScore %>
+                        </a>
+                </div>
+                <% } %>
             </div>
-            <div class="versus list">
-                <h2>versus win rate</h2>
-                <script>
-                    let rateList=[
-                        ['user1',60],['user2',50],['user3',40],
-                    ]
-                    rateList.forEach(e=>{
-                        document.writeln(`
-                        <div>${e[0]}: ${e[1]}%</div>
-                        `);
-                    });
-                </script>
+            <div>
+                <div>
+                    <h2>versus win rate</h2>
+                    <% for (var i=0; i < users.length; i++) { %>
+                        <a>
+                            Player : <%= users[i].username %> : 
+                            Rate : <%= users[i].rate %>%
+                        </a>
+                </div>
+                <% } %>
             </div>
-        </div>
-        <input type="button" name="back" id="backBtn" value="back">
-    </body>
+            <hr>
+            <input type="button" name="back" id="backBtn" value="back">
+</body>
+
 </html>

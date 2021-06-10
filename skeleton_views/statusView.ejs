@@ -8,10 +8,21 @@
 </head>
 
 <body>
-    <div class="box">
-        <%- include('./components/navbar') -%>
-        <h1>my status</h1>
-    </div>
+        <div class="box">
+            <%- include('./components/navbar') -%>
+                <h1>my status</h1>
+                <div>
+                    <div>
+                        <h2>versus win rate</h2>
+                        <% for (var i=0; i < users.length; i++) { %>
+                            <a>
+                                Player : <%= users[i].username %> :
+                                    Rate : <%= users[i].rate %>%
+                            </a>
+                    </div>
+                    <% } %>
+                </div>
+        </div>
 </body>
 
 </html>

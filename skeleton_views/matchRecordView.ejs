@@ -9,20 +9,22 @@
     </head>
     <body>
         <%- include('./components/navbar') -%>
-        <div class="board">
-            <div class="list">
-                <h2>match history</h2>
-                <script>
-                    let scoreList=[
-                        ['user1','user2'],['user2','user3'],['user3','user1'],
-                    ]
-                    scoreList.forEach(e=>{
-                        document.writeln(`
-                        <div>${e[0]} vs ${e[1]}</div>
-                        `);
-                    });
-                </script>
+            <div class="board">
+                <div class="list">
+                    <div>
+                        <h2>Match History</h2>
+                        <% if(histories.length> 10) histories.length = 10; %>
+                            <% for (var i=0, j=0; (i) < histories.length;i++) { %>
+                                <a>
+                                    Winner : <%= histories[i].winner %>,
+                                    Loser : <%= histories[i].loser %>,
+                                    MyScore : <%= histories[i].winnerScore %>
+                                    Date : <%= histories[i].Date.toString() %>
+                                </a>
+                    </div>
+                    <% } %>
+                </div>
             </div>
-        </div>
-    </body>
+</body>
+
 </html>

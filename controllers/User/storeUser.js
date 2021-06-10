@@ -14,7 +14,7 @@ module.exports = (req,res)=>{
                 if(error){
                     return res.redirect('/signUp')        
                 }        
-                res.redirect('/signUp')
+                res.redirect('/')
             })
         }
     })
