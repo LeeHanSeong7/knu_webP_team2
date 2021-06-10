@@ -45,6 +45,8 @@ async function playOnServer(callback, args, interval, waitTime){ // callback = ì
                     callback(args[1]);
                 }
                 else{
+                    alert(myTime);
+                    alert(targetTime);
                     args[1] = {
                         "status":"opponent disconnected",
                         "msg" : "opponent disconnected",

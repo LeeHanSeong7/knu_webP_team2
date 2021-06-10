@@ -24,6 +24,7 @@ const controllers = {
 }
 const MW = {
     "session" : require('./middleware/sessionChecker'),
+    "last" : require('./middleware/lastConnect'),
 }
 
 let port = process.env.PORT;
@@ -54,15 +55,16 @@ function addAuthControl(expressApp){
     expressApp.post('/auth/login',require('./controllers/Authetication/tryLogin'));
 }
 function addUserControl(expressApp){
-    expressApp.post('/user/list',MW.session,require('./controllers/User/userList'));
-    expressApp.get('/user/logout',MW.session,require('./controllers/User/logout'));
+    expressApp.post('/user/list',MW.session,MW.last,require('./controllers/User/userList'));
+    expressApp.get('/user/touch',MW.session,MW.last);
+    expressApp.get('/user/logout',MW.session,MW.last,require('./controllers/User/logout'));
     expressApp.post('/user/mysession',MW.session,require('./controllers/User/mySession'));
 }
 function addGameControl(expressApp){
-    expressApp.post('/game/join',MW.session,require('./controllers/Game/joinGame'));
-    expressApp.get('/game/quit',MW.session,require('./controllers/Game/quitGame'));
-    expressApp.post('/game/update',MW.session,require('./controllers/Game/updateGame'));
+    expressApp.post('/game/join',MW.session,MW.last,require('./controllers/Game/joinGame'));
+    expressApp.get('/game/quit',MW.session,MW.last,require('./controllers/Game/quitGame'));
+    expressApp.post('/game/update',MW.session,MW.last,require('./controllers/Game/updateGame'));
 }
 function addRecordControl(expressApp){
-    expressApp.get('/ranking/history', controllers.showHistory);
+    expressApp.get('/ranking/history',MW.session, controllers.showHistory);
 }
