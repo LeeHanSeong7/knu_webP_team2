@@ -29,10 +29,12 @@
                 <div>
                     <h2>versus win rate</h2>
                     <% for (var i=0; i < users.length; i++) { %>
+                        <% if (users[i].rate != 0) { %> 
                         <a>
                             Player : <%= users[i].username %> : 
                             Rate : <%= users[i].rate %>%
                         </a>
+                    <% } %>
                 </div>
                 <% } %>
             </div>

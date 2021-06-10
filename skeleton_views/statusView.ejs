@@ -12,15 +12,11 @@
         <%- include('./components/navbar') -%>
             <h1>my status</h1>
             <div>
-                <div>
-                    <h2>versus win rate</h2>
-                    <% for (var i=0; i < users.length; i++) { %>
-                        <a>
-                            Player : <%= users[i].username %> :
-                                Rate : <%= users[i].rate %>%
-                        </a>
-                </div>
-                <% } %>
+                        <p>Player : <%= users[0].username %></p>
+                        <p>Total : <%= users[0].total %></p>
+                        <p>Win : <%= users[0].win %></p>
+                        <p>Lose : <%= users[0].lose %></p>
+                        <p>Rate : <%= users[0].rate %>%</p>
             </div>
     </div>
 </body>
