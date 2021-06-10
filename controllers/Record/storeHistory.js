@@ -12,6 +12,7 @@ module.exports = async (req, res) => {
     })
     
     let winners = await User.findOne({username: winner});
+
     let total = {total: winners.total + 1};
     let win = {win: winners.win + 1};
     let rate = {rate: ((winners.win / winners.total) * 100).toFixed(0)}
@@ -20,7 +21,7 @@ module.exports = async (req, res) => {
     await User.findOneAndUpdate({username: winner}, win);
     await User.findOneAndUpdate({username: winner}, rate);
 
-    const losers = await User.findOne({username: loser});
+    let losers = await User.findOne({username: loser});
 
     total = {total: losers.total + 1};
     let lose = {lose: losers.lose + 1};

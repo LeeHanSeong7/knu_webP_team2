@@ -16,25 +16,14 @@
                 <div class="list">
                     <div>
                         <h2>Match History</h2>
-                        <% if(winHistories.length> 10) winHistories.length = 10; %>
-                            <% for (var i=0, j=0; (i + j) < (winHistories.length + loseHistories.length);) { %>
-                                <% console.log(winHistories[i].winner); %>
-                                <% if (winHistories[i].Date >= loseHistories[j].Date) { %>
-                                    <a>
-                                        Winner : <%= winHistories[i].winner %>,
-                                        Loser : <%= winHistories[i].loser %>,
-                                        MyScore : <%= winHistories[i].winScore %>
-                                    </a>
-                                        <% i++; %>
-                                    <% } else { %>
-                                    <a>
-                                        Winner : <%= loseHistories[i].winner %>,
-                                        Loser : <%= loseHistories[i].loser %>,
-                                        MyScore : <%= loseHistories[i].loseScore %>
-                                    </a>
-                                        <% j++; %>
-                                    
-                                    <% } %>
+                        <% if(histories.length> 10) histories.length = 10; %>
+                            <% for (var i=0, j=0; (i) < histories.length;i++) { %>
+                                <a>
+                                    Winner : <%= histories[i].winner %>,
+                                    Loser : <%= histories[i].loser %>,
+                                    MyScore : <%= histories[i].winnerScore %>
+                                    Date : <%= histories[i].Date.toString() %>
+                                </a>
                     </div>
                     <% } %>
                 </div>

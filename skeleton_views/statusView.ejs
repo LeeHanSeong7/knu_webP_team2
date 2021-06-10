@@ -18,7 +18,7 @@
                         <% for (var i=0; i < users.length; i++) { %>
                             <a>
                                 Player : <%= users[i].username %> :
-                                    Rate : <%= ((users[i].win / (users[i].win + users[i].lose)) * 100).toFixed(0) %>%
+                                    Rate : <%= users[i].rate %>%
                             </a>
                     </div>
                     <% } %>
