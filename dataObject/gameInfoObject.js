@@ -22,8 +22,6 @@ class match {
         this.gameData[userid] = gameData;
         this.lastConnect[userid] = new Date();
     }
-    endGame(caller){
-    }
     opponents(me){
         const arr = this.members.slice();
         const idx = arr.indexOf(me);
@@ -65,7 +63,16 @@ function myRoom(userid){
     }
     return false;
 }
-function deleteMatch(matchId){
+function deleteMatch(matchId, caller){
+    if (caller === null){ // 매치 자연제거
+        
+    }
+    else if (caller === true){ // 매치 정상종료
+
+    }
+    else{ // caller가 비정상 종료, 불이익
+
+    }
     gameRooms[matchId] = undefined;
 }
 

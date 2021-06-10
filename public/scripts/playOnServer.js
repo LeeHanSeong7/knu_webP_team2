@@ -1,4 +1,4 @@
-async function playOnServer(callback, args, interval, waitTime){ // callback = 인터벌 활성화마다 output으로 실행될 콜백함수, args=[input,output], interval = update interval, waitTime = opponent timeout
+async function playOnServer(callback, args, interval){ // callback = 인터벌 활성화마다 output으로 실행될 콜백함수, args=[input,output], interval = update interval, waitTime = opponent timeout
     let mysession = await fetch("/user/mysession", {method: 'POST'}); mysession = await mysession.json();
     async function join(){
         let res = await fetch('/game/join',{method:'POST'});
@@ -33,9 +33,7 @@ async function playOnServer(callback, args, interval, waitTime){ // callback = �
             res = await res.json();
             if (res["res"] == "true"){
                 let opponent = res["opponent"];
-                const myTime = new Date(res["lastConnect"][mysession.userid]).getTime();
-                const targetTime = new Date(res["lastConnect"][opponent]).getTime();
-                if (myTime - targetTime < waitTime){
+                if (res["status"] != "opponent_timeOut"){
                     let gameData = res["gameData"];
                     args[1] = {
                         "status":"updated",

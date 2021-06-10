@@ -11,7 +11,7 @@ module.exports = async (req,res) => {
     if (req.session.status == "gaming"){
         let room = myRoom(req.session.userid);
         if (room !== false){
-            deleteMatch(room);
+            deleteMatch(room,req.session.userid);
         }
     }
     let empty = getEmptyRoom(Rooms);
@@ -21,7 +21,7 @@ module.exports = async (req,res) => {
             tryCount += -1;
             if (tryCount == 0 || Rooms[matchId] === undefined){
                 clearInterval(timerId);
-                deleteMatch(matchId);
+                deleteMatch(matchId,null);
                 res.json({
                     "res" : "false",
                     "status" : req.session.status,

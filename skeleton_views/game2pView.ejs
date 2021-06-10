@@ -71,7 +71,7 @@
                     gameQuitOnclick();
                      break;
                 case ('updated'):
-                    DrawOpponent(callback_args['data']['board']);
+                    DrawOpponent(callback_args['data']['board']); // 여기서 board정보가 누락시 상대방 패배로 인식;
                     args[0] = {"board" : board};
                      break;
                 case ('opponent disconnected'):
@@ -83,7 +83,7 @@
                 default:
                     break;         
             }
-        },args,100,3000);
+        },args,100);
     </script>
 </body>
 

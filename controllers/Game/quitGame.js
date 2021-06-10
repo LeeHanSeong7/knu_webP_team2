@@ -6,13 +6,13 @@ module.exports = (req,res) => {
     if (req.session.status == "gaming"){
         let room = myRoom(req.session.userid);
         if (room !== false){
-            deleteMatch(room);
+            deleteMatch(room,req.session.userid);
         }
     }
     else if (req.session.status == "lobby"){
         let room = myRoom(req.session.userid);
         if (room !== false){
-            deleteMatch(room);
+            deleteMatch(room,req.session.userid);
         }
     }
     req.session.status = "lobby";
