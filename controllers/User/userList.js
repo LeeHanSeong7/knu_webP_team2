@@ -2,6 +2,6 @@ const userList = require('../../dataObject/userlistObject');
 
 module.exports = (req,res) => {
     res.json({
-        "data": userList.userList(),
+        "data": userList.getUserList(),
     });
 }

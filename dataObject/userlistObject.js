@@ -1,18 +1,33 @@
-const lastConnect = {};
+const userList = {};
 
-function touchUser(userid){
-    lastConnect[userid] = new Date();
+class user {
+    constructor(session_id){
+        this.lastConnect = new Date();
+        this.lastSession = session_id;
+    }
+    touch(){
+        this.lastConnect = new Date();
+    }
 }
-function userList(){
-    return Object.keys(lastConnect);
+function getUserList(){
+    return Object.keys(userList);
+}
+function login(userid, session_id){
+    if (Object.keys(userList).includes(userid)){
+        userList[userid].touch();
+        userList[userid].lastSession = session_id;
+    }
+    else{
+        userList[userid]=new user(session_id);
+    }
 }
 function logout(userid){
-    delete lastConnect[userid];
+    delete userList[userid];
 }
 
 module.exports = {
-    lastConnect,
-    touchUser,
     userList,
+    getUserList,
+    login,
     logout,
 };
