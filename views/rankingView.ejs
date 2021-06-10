@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .board {
+                display: flex;
+                flex-direction: row;
+            }
+            .list {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <%- include('./components/navbar') -%>
+            <div>
+                <div>
+                    <h2>single high score</h2>
+                    <% if(histories.length > 10) histories.length = 10; %>
+                    <% for (var i=0; i < histories.length; i++) { %>
+                        <a>
+                            Player : <%= histories[i].winner %>, 
+                            Score : <%= histories[i].winnerScore %>
+                        </a>
+                </div>
+                <% } %>
+            </div>
+            <div>
+                <div>
+                    <h2>versus win rate</h2>
+                    <% for (var i=0; i < users.length; i++) { %>
+                        <% if (users[i].rate != 0) { %> 
+                        <a>
+                            Player : <%= users[i].username %> : 
+                            Rate : <%= users[i].rate %>%
+                        </a>
+                    <% } %>
+                </div>
+                <% } %>
+            </div>
+            <hr>
+            <input type="button" name="back" id="backBtn" value="back">
+</body>
+
+</html>
