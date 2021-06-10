@@ -7,20 +7,24 @@ const HistorySchema = new Schema({
         default: Date.now,
         required: true
     },
-    player1: {
+    winner: {
         type: String,
-        required: true
+        required: true,
+        default: "None"
     },
-    player2: {
-        type: String
-    },
-    score: {
+    loser: {
         type: String,
-        required: true
+        default: "None"
     },
-    level: {
-        type: String,
-        require: true
+    winnerScore: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    loserScore: {
+        type: Number,
+        require: true,
+        default: 0
     }
 });
 

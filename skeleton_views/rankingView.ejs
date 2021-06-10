@@ -23,8 +23,8 @@
                     <% if(histories.length > 10) histories.length = 10; %>
                     <% for (var i=0; i < histories.length; i++) { %>
                         <a>
-                            Player : <%= histories[i].player1 %>, 
-                            Score : <%= histories[i].score %>
+                            Player : <%= histories[i].winner %>, 
+                            Score : <%= histories[i].winnerScore %>
                         </a>
                 </div>
                 <% } %>
@@ -35,7 +35,7 @@
                     <% for (var i=0; i < users.length; i++) { %>
                         <a>
                             Player : <%= users[i].username %> : 
-                            Rate : <%= ((users[i].win / (users[i].win + users[i].defeat)) * 100).toFixed(0) %>%
+                            Rate : <%= ((users[i].win / (users[i].win + users[i].lose)) * 100).toFixed(0) %>%
                         </a>
                 </div>
                 <% } %>

@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            .list {
-                border: 1px solid black;
-            }
-        </style>
-    </head>
-    <body>
-        <%- include('../views/scripts') -%>
+
+<head>
+    <style>
+        .list {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../views/scripts') -%>
         <%- include('./components/navbar') -%>
-        <div class="board">
-            <div class="list">
-                <h2>match history</h2>
-                <script>
-                    let scoreList=[
-                        ['user1','user2'],['user2','user3'],['user3','user1'],
-                    ]
-                    scoreList.forEach(e=>{
-                        document.writeln(`
-                        <div>${e[0]} vs ${e[1]}</div>
-                        `);
-                    });
-                </script>
+            <div class="board">
+                <div class="list">
+                    <div>
+                        <h2>Match History</h2>
+                        <% if(winHistories.length> 10) winHistories.length = 10; %>
+                            <% for (var i=0, j=0; (i + j) < (winHistories.length + loseHistories.length);) { %>
+                                <% console.log(winHistories[i].winner); %>
+                                <% if (winHistories[i].Date >= loseHistories[j].Date) { %>
+                                    <a>
+                                        Winner : <%= winHistories[i].winner %>,
+                                        Loser : <%= winHistories[i].loser %>,
+                                        MyScore : <%= winHistories[i].winScore %>
+                                    </a>
+                                        <% i++; %>
+                                    <% } else { %>
+                                    <a>
+                                        Winner : <%= loseHistories[i].winner %>,
+                                        Loser : <%= loseHistories[i].loser %>,
+                                        MyScore : <%= loseHistories[i].loseScore %>
+                                    </a>
+                                        <% j++; %>
+                                    
+                                    <% } %>
+                    </div>
+                    <% } %>
+                </div>
             </div>
-        </div>
-    </body>
+</body>
+
 </html>

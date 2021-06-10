@@ -12,17 +12,22 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
-    state: {
-      type: String, 
+    total: {
+      type: Number,
       required: true,
-      default: "logout"
+      default: 0
     },
     win: {
       type: Number,
       required: true,
       default: 0
     },
-    defeat: {
+    lose: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    rate: {
       type: Number,
       required: true,
       default: 0
