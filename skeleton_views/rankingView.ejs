@@ -1,45 +1,66 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            .board {
-                display: flex;
-                flex-direction: row;
-            }
-            .list {
-                border: 1px solid black;
-            }
-        </style>
-    </head>
-    <body>
-        <%- include('./components/navbar') -%>
-            <div>
-                <div>
-                    <h2>single high score</h2>
-                    <% if(histories.length > 10) histories.length = 10; %>
+
+<head>
+    <style>
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./components/navbar') -%>
+        <div>
+            <table border="1" style="width:51%;float:left;">
+                <caption>
+                    <strong style="font-size: 20px;">High Score</strong>
+                </caption>
+                <% if(histories.length> 10) histories.length = 10; %>
+                    <tr>
+                        <th>Username</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
                     <% for (var i=0; i < histories.length; i++) { %>
-                        <a>
-                            Player : <%= histories[i].winner %>, 
-                            Score : <%= histories[i].winnerScore %>
-                        </a>
-                </div>
-                <% } %>
-            </div>
-            <div>
-                <div>
-                    <h2>versus win rate</h2>
+                        <tr>
+                            <td>
+                                <%= histories[i].winner %>
+                            </td>
+                            <td>
+                                <%= histories[i].winnerScore %>
+                            </td>
+                            <td>
+                                <%= histories[i].Date.toLocaleString() %>
+                            </td>
+                        </tr>
+                        <% } %>
+            </table>
+            <table border="1" style="width:49%;float:right;">
+                <caption>
+                    <strong style="font-size: 20px;">Winning Rate</strong>
+                </caption>
+                <% if(users.length> 10) users.length = 10; %>
+                    <tr>
+                        <th>Username</th>
+                        <th>Winning Rate</th>
+                    </tr>
                     <% for (var i=0; i < users.length; i++) { %>
-                        <% if (users[i].rate != 0) { %> 
-                        <a>
-                            Player : <%= users[i].username %> : 
-                            Rate : <%= users[i].rate %>%
-                        </a>
+                        <% if (users[i].rate !=0) { %>
+                            <tr>
+                                <td>
+                                    <%= users[i].username %>
+                                </td>
+                                <td>
+                                    <%= users[i].rate %>%
+                                </td>
+                            </tr>
                     <% } %>
-                </div>
                 <% } %>
-            </div>
-            <hr>
-            <input type="button" name="back" id="backBtn" value="back">
+            </table>
+        </div>
+        <br>
+        <input type="button" name="back" id="backBtn" value="back">
 </body>
 
 </html>

@@ -4,20 +4,44 @@
 <head>
     <title>SignUp</title>
     <style>
+        td {
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <div class="box">
+    <div>
         <%- include('./components/navbar') -%>
-            <h1>my status</h1>
-            <div>
-                        <p>Player : <%= users[0].username %></p>
-                        <p>Total : <%= users[0].total %></p>
-                        <p>Win : <%= users[0].win %></p>
-                        <p>Lose : <%= users[0].lose %></p>
-                        <p>Rate : <%= users[0].rate %>%</p>
-            </div>
+            <table border="1" style="width:50%;">
+                <caption>
+                    <strong style="font-size: 20px;">My Status</strong>
+                </caption>
+                <tr>
+                    <th>Username</th>
+                    <th>Total</th>
+                    <th>Win</th>
+                    <th>Lose</th>
+                    <th>Winning Rate</th>
+                </tr>
+                <tr>
+                    <td>
+                        <%= users[0].username %>
+                    </td>
+                    <td>
+                        <%= users[0].total %>
+                    </td>
+                    <td>
+                        <%= users[0].win %>
+                    </td>
+                    <td>
+                        <%= users[0].lose %>
+                    </td>
+                    <td>
+                        <%= users[0].rate %>%
+                    </td>
+                </tr>
+            </table>
     </div>
 </body>
 
