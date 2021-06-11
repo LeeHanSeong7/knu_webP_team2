@@ -27,6 +27,12 @@
 
 
 <body>
+
+    <!-- score -->
+    <div id="score_check"> <span id="opponent_score">0</span></div>
+    <div id="score_check"> <span id="player_score">0</span></div>
+
+
     <!-- canvas -->
     <div id="opponent">
         <canvas id="opponent_board" width="500" height="1200"></canvas>
@@ -37,15 +43,10 @@
         <canvas id="player_animated" width="500" height="1200"></canvas>
     </div>
 
-    <!-- score -->
-    <div id="score_check"> <span id="score">0</span></div>
-
 
     <!-- pause -->
     <div id="instructions" style="position: relative">
-        <div id='controls' style="float: left">
-            <input type='button' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value='Pause' style="font-size: 150%" /><br/>
-        </div>
+        <div id='controls' style="float: left"></div>
     </div>
 </body>
 
