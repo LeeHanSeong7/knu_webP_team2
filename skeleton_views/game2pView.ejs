@@ -34,6 +34,10 @@
         <button onclick="gameQuitOnclick()">quit</button>
     </div>
     <div class="gameDiv">
+        <!-- score -->
+        <div id="score_check"> <span id="opponent_score">0</span></div>
+        <div id="score_check"> <span id="player_score">0</span></div>
+
         <!-- canvas -->
         <div id="opponent" style="
             display: flex;
@@ -52,14 +56,9 @@
             <canvas id="player_animated" width="500" height="1200"></canvas>
         </div>
 
-        <!-- score -->
-        <div id="score_check"> <span id="score">0</span></div>
-
         <!-- pause -->
         <div id="instructions" style="position: relative">
-            <div id='controls' style="float: left">
-                <input type='button' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value='Pause' style="font-size: 150%" /><br/>
-            </div>
+            <div id='controls' style="float: left"></div>
         </div>
         <button onclick="gameQuitOnclick()">quit</button>
     </div>
@@ -74,16 +73,19 @@
                     watingDiv.innerHTML = callback_args['msg'];
                     watingDiv.style.display = 'none';
                     gameDiv.style.display = 'block';
-                    console.log(gameDiv.querySelector("#player").querySelector('#userid'));
-                    gameDiv.querySelector("#player").querySelector('#userid').innerHTML=callback_args["userid"]                  
-                    gameDiv.querySelector("#opponent").querySelector('#userid').innerHTML=callback_args["opponent"]
+                    //gameDiv.querySelector("#player").querySelector('#userid').innerHTML=callback_args["userid"]                  
+                    //gameDiv.querySelector("#opponent").querySelector('#userid').innerHTML=callback_args["opponent"]
                      break;
                 case ('join fail'):
                     gameQuitOnclick();
                      break;
                 case ('updated'):
-                    DrawOpponent(callback_args['data']['board']); // 여기서 board정보가 누락시 상대방 패배로 인식;
-                    args[0] = {"board" : board};
+                    DrawOpponent(callback_args['data']['isOver'],callback_args['data']['score'],callback_args['data']['board']);
+                    args[0] = {
+                        "board" : board,
+                        "score" : player_score,
+                        "isOver" : player_over,
+                    };
                      break;
                 case ('opponent disconnected'):
                     gameQuitOnclick();
