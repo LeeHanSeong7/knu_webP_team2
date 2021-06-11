@@ -24,7 +24,9 @@
 
     <script src="/scripts/playOnServer.js"></script>
     <script>
-        function gameQuitOnclick(){location.href="/game/quit";};
+        function gameQuitOnclick(){
+            location.href="/game/quit";
+        };
     </script>
 </head>
 
@@ -80,7 +82,8 @@
                     gameQuitOnclick();
                      break;
                 case ('updated'):
-                    DrawOpponent(callback_args['data']['isOver'],callback_args['data']['score'],callback_args['data']['board']);
+                    let data = callback_args['data'];
+                    DrawOpponent(data['isOver'],data['score'],data['board']);
                     args[0] = {
                         "board" : board,
                         "score" : player_score,

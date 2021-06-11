@@ -66,23 +66,36 @@ function myRoom(userid){
     return false;
 }
 function deleteMatch(matchId, caller){
-    if (caller === null){ // 매치 자연제거
-        
-    }
-    else if (caller === true){ // 매치 정상종료
-
-    }
+    if (caller === null){}// 매치 자연 삭제
+    else if (caller === true){} // 매치 정상종료
     else{ // caller가 비정상 종료, 불이익
         let room = gameRooms[myRoom(caller)];
         let opponent = room.opponents(caller)[0];
-        let req = {
-            body : {
+        let req = {}
+        if (room.gameData[opponent]['isOver'] === true){
+            req.body = {
+                winner: caller,
+                loser: opponent,
+                winnerScore: room.gameData[caller]['score'],
+                loserScore: room.gameData[opponent]['score'],
+            };
+        }
+        else if(room.gameData[caller]['isOver'] === true){
+            req.body = {
+                winner: opponent,
+                loser: caller,
+                winnerScore: room.gameData[opponent]['score'],
+                loserScore: room.gameData[caller]['score'],
+            };
+        }
+        else{    
+            req.body = {
                 winner: opponent,
                 loser: caller,
                 winnerScore: room.gameData[opponent]['score'],
                 loserScore: 0,
-            }
-        };
+            };
+        }
         storeHistory(req,null)
     }
     gameRooms[matchId] = undefined;

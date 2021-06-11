@@ -12,7 +12,7 @@ module.exports = (req,res) => {
     else if (req.session.status == "lobby"){
         let room = myRoom(req.session.userid);
         if (room !== false){
-            deleteMatch(room,req.session.userid);
+            deleteMatch(null);
         }
     }
     req.session.status = "lobby";
