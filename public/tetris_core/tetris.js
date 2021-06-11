@@ -119,7 +119,7 @@ function drawBoard(boardArr, context) {
     context.fillRect(xoff, yoff, (xsize + gapsize) * 10 - gapsize, (ysize + gapsize) * 24 - gapsize);
     for (i = 0; i < 24; i++) {
         for (j = 0; j < 10; j++) {
-            drawBox(i * 10 + j, board[i][j], context);
+            drawBox(i * 10 + j, boardArr[i][j], context);
         }
     }
 }
