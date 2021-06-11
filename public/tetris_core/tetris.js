@@ -14,7 +14,7 @@ function DrawOpponent(opponent_over, opponent_score, opponent_board) {
 var MovingSpeedUpdate = setInterval(function() {
     var oppo_score = document.getElementById("opponent_score").innerHTML;
     clearInterval(autoMoveDownInterval);
-    autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300 - oppo_score / 10);
+    autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300 - parseInt(oppo_score / 10));
 }, 1000);
 
 function random_det(seed) {
