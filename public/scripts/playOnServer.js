@@ -6,6 +6,8 @@ async function playOnServer(callback, args, interval){ // callback = 인터벌 �
         if (res["res"] == "true"){
             args[1] = {
                 "status":"gaming",
+                "userid" : mysession['userid'],
+                "opponent" : res["opponent"],
                 "msg" : "gaming",
             };
             callback(args[1]);

@@ -31,10 +31,12 @@ module.exports = async (req,res) => {
                 clearInterval(timerId);
                 req.session.status = "gaming";
                 req.session.matchId = matchId;
+                let opponent = Rooms[matchId].opponents(req.session.userid)[0];
                 res.json({
                     "res" : "true",
                     "status" : req.session.status,
                     "matchId" : req.session.matchId,
+                    "opponent" : opponent,
                 });
             }
         },interval);
@@ -43,10 +45,13 @@ module.exports = async (req,res) => {
         Rooms[empty].join(req.session.userid);
         req.session.status = "gaming";
         req.session.matchId = empty;
+        let opponent = Rooms[empty].opponents(req.session.userid)[0];
+
         res.send({
             "res" : "true",
             "status" : req.session.status,
             "matchId" : req.session.matchId,
+            "opponent" : opponent,
         });
     }
 }
