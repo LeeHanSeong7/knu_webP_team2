@@ -68,17 +68,17 @@
                     gameDiv.style.display = 'block';
                      break;
                 case ('join fail'):
-                    gameQuitOnclick()
+                    gameQuitOnclick();
                      break;
                 case ('updated'):
                     DrawOpponent(callback_args['data']['board']);
                     args[0] = {"board" : board};
                      break;
                 case ('opponent disconnected'):
-                    gameQuitOnclick()
+                    gameQuitOnclick();
                      break;
                 case ('match ended'):
-                    gameQuitOnclick()
+                    gameQuitOnclick();
                      break;
                 default:
                     break;         
