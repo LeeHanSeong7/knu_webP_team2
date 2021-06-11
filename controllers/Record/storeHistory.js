@@ -6,9 +6,9 @@ module.exports = async (req, res) => {
 
     await History.create(req.body, (error, history) => {
         if (error) {
-            return res.redirect('/history')
+            console.log(error)
+            return res.redirect('/lobby')
         }
-        res.redirect('/history')
     })
     
     let winners = await User.findOne({username: winner});

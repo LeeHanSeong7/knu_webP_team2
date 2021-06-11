@@ -1,3 +1,5 @@
+const storeHistory = require('../controllers/Record/storeHistory');
+
 const gameRooms = [];
 
 class match {
@@ -71,7 +73,17 @@ function deleteMatch(matchId, caller){
 
     }
     else{ // caller가 비정상 종료, 불이익
-
+        let room = gameRooms[myRoom(caller)];
+        let opponent = room.opponents(caller)[0];
+        let req = {
+            body : {
+                winner: opponent,
+                loser: caller,
+                winnerScore: room.gameData[opponent]['score'],
+                loserScore: 0,
+            }
+        };
+        storeHistory(req,null)
     }
     gameRooms[matchId] = undefined;
 }
