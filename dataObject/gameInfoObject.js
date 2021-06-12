@@ -35,10 +35,10 @@ class match {
 
 function getEmptyRoom(userid){
     let i=0;
-    for(i=i; i<Rooms.length; i++){
-        if (Rooms[i] == undefined) continue;
-        else if (Rooms[i].checkFull() == false){
-            if (Rooms[i].members.includes(userid)) continue;
+    for(i=i; i<gameRooms.length; i++){
+        if (gameRooms[i] == undefined) continue;
+        else if (gameRooms[i].checkFull() == false){
+            if (gameRooms[i].members.includes(userid)) continue;
             return i;
         }
     }
