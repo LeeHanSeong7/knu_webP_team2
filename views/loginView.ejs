@@ -5,36 +5,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        .box {
-            position: absolute;
-            left: 40%;
-            text-align: center;
-        }
-        
-        .id_psw {
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="/style/loginStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="/style/defaultStyle.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <title>Sign in</title>
 </head>
 
 <body>
-    <div class="box">
-        <form action="/auth/login" method="POST">
-            Login
-            <div class="id_psw">
-                ID : 
-                <input type="text" name="id" size="14">
-                <br>
-                Password : 
-                <input type="password" name="pw" size="14">
-            </div>
-            <input type="submit" value="login"></input>
+    <div class="main">
+        <p class="sign" align="center">
+            <a class="title">T </a>
+            <a class="title">E </a>
+            <a class="title">T </a>
+            <a class="title">R </a>
+            <a class="title">I </a>
+            <a class="title">S</a>
+        </p>
+        <form class="form1" action="/auth/login" method="POST">
+            <input class="un " type="text" name="id" align="center" placeholder="Username">
+            <input class="pass" type="password" name="pw" align="center" placeholder="Password">
+            <input class="submit" type="submit" value="Sign in" align="center">
         </form>
-        <a href="/signUp">
-            <input type="button" value="signUp">
-        </a>
+        <p class="signUp" align="center"><a href="/signUp">Sign up</a></p>
     </div>
 </body>
 
