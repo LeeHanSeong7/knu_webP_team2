@@ -2,9 +2,20 @@
 <html>
 
 <head>
+    <title>Ranking</title>
     <style>
         td {
             text-align: center;
+        }
+
+        table {
+            background-color: #FFFFFF;
+        }
+
+        body {
+            background-image: url(../image/background/8.jpg);
+            background-size: contain;
+            font-family: 'Ubuntu', sans-serif;
         }
     </style>
 </head>
@@ -12,7 +23,7 @@
 <body>
     <%- include('./components/navbar') -%>
         <div>
-            <table border="1" style="width:51%;float:left;">
+            <table border="1" style="width:50%;float:left;">
                 <caption>
                     <strong style="font-size: 20px;">High Score</strong>
                 </caption>
@@ -36,7 +47,7 @@
                         </tr>
                         <% } %>
             </table>
-            <table border="1" style="width:49%;float:right;">
+            <table border="1" style="width:50%;float:right;">
                 <caption>
                     <strong style="font-size: 20px;">Winning Rate</strong>
                 </caption>
@@ -55,8 +66,8 @@
                                     <%= users[i].rate %>%
                                 </td>
                             </tr>
-                    <% } %>
-                <% } %>
+                            <% } %>
+                                <% } %>
             </table>
         </div>
 </body>

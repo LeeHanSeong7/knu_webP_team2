@@ -2,9 +2,20 @@
 <html>
 
 <head>
+    <title>Match record</title>
     <style>
         td {
             text-align: center;
+        }
+
+        table {
+            background-color: #FFFFFF;
+        }
+
+        body {
+            background-image: url(../image/background/8.jpg);
+            background-size: contain;
+            font-family: 'Ubuntu', sans-serif;
         }
     </style>
 </head>
@@ -35,21 +46,21 @@
                                 <%= histories[i].winnerScore %>
                             </td>
                             <% if(i==0) { %>
-                            <td rowspan= "<%= histories.length %>">
-                                VS
-                            </td>
-                        <% } %>
-                            <td>
-                                <%= histories[i].loser %>
-                            </td>
-                            <td>
-                                <%= histories[i].loserScore %>
-                            </td>
-                            <td>
-                                <%= histories[i].Date.toLocaleString() %>
-                            </td>
+                                <td rowspan="<%= histories.length %>">
+                                    VS
+                                </td>
+                                <% } %>
+                                    <td>
+                                        <%= histories[i].loser %>
+                                    </td>
+                                    <td>
+                                        <%= histories[i].loserScore %>
+                                    </td>
+                                    <td>
+                                        <%= histories[i].Date.toLocaleString() %>
+                                    </td>
                         </tr>
-                    <% } %>
+                        <% } %>
             </table>
         </div>
 </body>
