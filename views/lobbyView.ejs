@@ -4,12 +4,20 @@
 <head>
     <title>LOBBY</title>
     <script>
-            function game1pOnclick(){
-                location.href="/game/1p";
+            function game1pOnclick(event){
+                setTimeout(()=>{
+                    location.href="/game/1p";
+                },1000);
             }
-
-            function game2pOnclick(){
-                location.href="/game/2p";
+            function game2pOnclick(event){
+                let target = event.target;
+                target.style["width"]="300vw";
+                target.style.display = "fixed";
+                target.style["height"]="300vh";
+                target.style.z=1;
+                setTimeout(()=>{
+                    location.href="/game/2p";
+                },300);
             }
     </script>
     <link rel="stylesheet" href="/style/defaultStyle.css">
@@ -23,8 +31,22 @@
             text-align: center;
         }
         .StartButton {
-            width: 200px;
-            height: 100px;
+            width: 250px;
+            height: 50%;
+            font-size: 2rem;
+            display: flex;
+            flex-direction: row;
+            align-self: center;
+            background-color: white;
+            border-radius: 1.0em;
+            margin: 1em;
+            transition: linear 0.25s;
+        }
+        .StartButton:hover{
+            background-color: rgba(0,172,167,1);
+            width: 325px;
+            height: 65%;
+            border-radius: 2.5em;
         }
         #mainContainer{
             display: flex;
@@ -35,11 +57,22 @@
             display: flex;
             flex-direction: row;
             flex:1;
-            background-color: orange;
+            background-color: rgba(122,122,122,0.7);
         }
         .buttomContainer{
-            text-align: center;
             flex:1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        .buttontext{
+            color: black;
+            font-weight: bold;
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+            align-self: center;
+            width: 100%;
         }
     </style>
 </head>
@@ -48,8 +81,12 @@
     <div id="mainContainer">
         <div class="nav"><%- include('./components/navbar') -%></div>
         <div class="buttomContainer">
-            <input class="StartButton 1P" type="button" name="Game Start!!" value="GameStart1p" onclick="game1pOnclick()">
-            <input class="StartButton 2P" type="button" name="Game Start!!" value="GameStart2p" onclick="game2pOnclick()">
+            <div class="StartButton 1P"  onclick="game1pOnclick(event)""> 
+                <div class="buttontext">GameStart1p</div>
+            </div>
+            <div class="StartButton 1P"  onclick="game2pOnclick(event)""> 
+                <div class="buttontext">GameStart2p </div>
+            </div>
         </div>
         <div class="chatContainer">
             <div style="flex : 2">
