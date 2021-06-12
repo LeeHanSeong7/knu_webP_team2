@@ -7,11 +7,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        td {
+        th, td {
             text-align: center;
         }
         table {
             background-color: #FFFFFF;
+            margin: auto;
         }
         body {
             background-image: url(../image/background/8.jpg);
@@ -24,9 +25,9 @@
 <body>
     <div>
         <%- include('./components/navbar') -%>
-            <table class="table table-striped" align="center" border="1" style="width:100%;">
+            <table class="table table-striped" align="center" border="1" style="width:75%;">
                 <caption>
-                    <strong style="font-size: 20px;color:#FFFFFF;">My Status</strong>
+                    <strong style="font-size: 20px;color:#FFFFFF;text-align: center;">My Status</strong>
                 </caption>
                 <tr>
                     <th>Username</th>

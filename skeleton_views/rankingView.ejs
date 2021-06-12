@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        td {
+        th, td {
             text-align: center;
         }
 
@@ -28,7 +28,7 @@
         <div>
             <table class="table table-striped" border="1" style="width:50%;float:left;">
                 <caption>
-                    <strong style="font-size: 20px;color:#FFFFFF;">High Score</strong>
+                    <strong style="font-size: 20px;color:#FFFFFF;text-align: center;">High Score</strong>
                 </caption>
                 <% if(histories.length> 10) histories.length = 10; %>
                     <tr>
