@@ -1,13 +1,13 @@
 const User = require('../../models/User.js')
-
+const config = require('../../testConfig');
 
 module.exports = (req,res)=>{ 
     User.findOne({username: req.body.username}, (err, user) => {
         if(err) {
-            return res.status(500).json({ message: 'Error!'})
+            res.redirect('/signUp')
         }
         else if (user) {
-            return res.status(404).json({message: 'Already Exists!'})
+            res.render(config.viewPath+'signUpView.ejs', {duplicate: true});
         }
         else {
             User.create(req.body, (error, user)=>{
