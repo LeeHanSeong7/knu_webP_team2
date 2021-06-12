@@ -14,7 +14,11 @@ function DrawOpponent(opponent_over, opponent_score, opponent_board) {
 var MovingSpeedUpdate = setInterval(function() {
     var oppo_score = document.getElementById("opponent_score").innerHTML;
     clearInterval(autoMoveDownInterval);
-    autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300 - parseInt(oppo_score / 10));
+    if (300 - parseInt(oppo_score / 10) >= 80) {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300 - parseInt(oppo_score / 10));
+    } else {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 80);
+    }
 }, 1000);
 
 function random_det(seed) {
@@ -632,6 +636,13 @@ moves = [
     // left
     function() {
         if (freezeInteraction) return;
+        pieceY += 1;
+        if (isPieceInside()) {
+            pieceY -= 1;
+            fixPiece();
+        } else {
+            pieceY -= 1;
+        }
         pieceX -= 1;
         if (isPieceInside()) pieceX += 1;
         shiftright = 0;
@@ -648,6 +659,13 @@ moves = [
     // right
     function() {
         if (freezeInteraction) return;
+        pieceY += 1;
+        if (isPieceInside()) {
+            pieceY -= 1;
+            fixPiece();
+        } else {
+            pieceY -= 1;
+        }
         pieceX += 1;
         if (isPieceInside()) pieceX -= 1;
         shiftright = 1;
@@ -667,10 +685,16 @@ moves = [
     // rotate clockwise
     function() {
         if (freezeInteraction) return;
+
         var oldrot = curRotation;
         curRotation = (curRotation + 1) % (tetrominos[curPiece].length);
         if (kick()) curRotation = oldrot;
         else animRotation = -Math.PI / 2.0;
+        pieceY += 1;
+        if (isPieceInside()) {
+            pieceY -= 1;
+            fixPiece();
+        }
         updateShadow();
         clearLockTimer();
     },
