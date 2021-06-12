@@ -2,11 +2,23 @@
 <html>
 
 <head>
-
-    <link rel="stylesheet" href="/style/defaultStyle.css">
+    <title>Ranking</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        td {
+        th, td {
             text-align: center;
+        }
+
+        table {
+            background-color: #FFFFFF;
+        }
+
+        body {
+            background-image: url(../image/background/8.jpg);
+            background-size: contain;
+            font-family: 'Ubuntu', sans-serif;
         }
     </style>
 </head>
@@ -14,18 +26,22 @@
 <body>
     <%- include('./components/navbar') -%>
         <div>
-            <table border="1" style="width:51%;float:left;">
+            <table class="table table-striped" border="1" style="width:50%;float:left;">
                 <caption>
-                    <strong style="font-size: 20px;">High Score</strong>
+                    <strong style="font-size: 20px;color:#FFFFFF;text-align: center;">High Score</strong>
                 </caption>
                 <% if(histories.length> 10) histories.length = 10; %>
                     <tr>
+                        <th>#</th>
                         <th>Username</th>
                         <th>Score</th>
                         <th>Date</th>
                     </tr>
                     <% for (var i=0; i < histories.length; i++) { %>
                         <tr>
+                            <td>
+                                <%= (i+1) %>
+                            </td>
                             <td>
                                 <%= histories[i].winner %>
                             </td>
@@ -38,12 +54,13 @@
                         </tr>
                         <% } %>
             </table>
-            <table border="1" style="width:49%;float:right;">
+            <table class="table table-striped" align="center" border="1" style="width:50%;float:right;">
                 <caption>
-                    <strong style="font-size: 20px;">Winning Rate</strong>
+                    <strong style="font-size: 20px;color:#FFFFFF;">Winning Rate</strong>
                 </caption>
                 <% if(users.length> 10) users.length = 10; %>
                     <tr>
+                        <th>#</th>
                         <th>Username</th>
                         <th>Winning Rate</th>
                     </tr>
@@ -51,14 +68,17 @@
                         <% if (users[i].rate !=0) { %>
                             <tr>
                                 <td>
+                                    <%= (i+1) %>
+                                </td>
+                                <td>
                                     <%= users[i].username %>
                                 </td>
                                 <td>
                                     <%= users[i].rate %>%
                                 </td>
                             </tr>
-                    <% } %>
-                <% } %>
+                            <% } %>
+                                <% } %>
             </table>
         </div>
 </body>
