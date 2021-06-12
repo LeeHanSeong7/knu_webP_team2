@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST</title>
+    <style>
+        .box {
+            position: absolute;
+            left: 40%;
+            text-align: center;
+        }
+
+        .id_psw {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1>TEST HISTORY</h1>
+        <form action="/history/store" method="POST">
+            <br />
+            <div class="id_psw">
+                Winner : <input type="text" name="winner" size="14" placeholder="player1" required>
+                <br /> Loser : <input type="text" name="loser" size="14" placeholder="player2">
+                <br /> winnerScore : <input type="text" name="winnerScore" size="14" placeholder="winnerScore">
+                <br /> loserScore : <input type="text" name="loserScore" size="14" placeholder="loserScore">
+            </div>
+            <br />
+            <br />
+            <input type="submit" value="Save"></input>
+        </form>
+        <a href="/lobby">
+            <input type="button" value="back">
+        </a>
+    </div>
+</body>
+
+</html>
