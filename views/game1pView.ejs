@@ -41,16 +41,25 @@
 
 <body>
     <div>
-            <div>
-                <span class="score">score 0</span>
-                <span class="level">level 0</span>
-            </div>
-            <p>Tetris board here</p>
-            <div>
-                <button>retry</button>
-                <button>setting</button>
-                <button onclick="gameQuitOnclick()">quit</button>
-            </div>
+            
+    <!-- score -->
+    <div id="score_check"> <span id="player_score">0</span></div>
+
+
+    <!-- canvas -->
+    <div id="player">
+        <canvas id="player_board" width="500" height="1200"></canvas>
+        <canvas id="player_animated" width="500" height="1200"></canvas>
+        <canvas id="player_shadow" width="500" height="1200"></canvas>
+    </div>
+
+
+    <!-- pause -->
+    <div id="instructions" style="position: relative">
+        <div id='controls' style="float: left">
+            <input type="button" onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value="Pause" style="font-size: 150%">
+        </div>
+    </div>
     </div>
 </body>
 
