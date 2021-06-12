@@ -1,21 +1,41 @@
-<div id="chatting" style="
-    width: 100%;
-    height: 100%;
-    border: 1px solid black;       
-    display: flex;
-    flex-direction: column;
-">
-    <div class="log" style="
+<style>
+    #chatting{
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;       
+        display: flex;
+        flex-direction: column;
+    }
+    #chattingLog{
         overflow-y:scroll;
         flex: 1;
-    "></div>
-    <div style="
-        height: 50px;
-        display: flex;
-        flex-direction: row;
-    ">  
-        <input type="text" style="
-            flex: 1;">
-        <button>send</button>
-    </div>
+    }
+    #chatSend{
+        width: 100%;
+        height: 10%;
+    }
+</style>
+<div id="chatting">
+    <script>
+        async function sendChatting(){
+            if (event.keyCode == 13){
+                const target = document.getElementById("chatSend");
+                let body = {
+                            "data":target.value
+                        };
+                if (target.value.length != 0){
+                    fetch('/user/say',{
+                        'method':'POST',
+                        'body':  JSON.stringify(body)
+                    });
+                    target.value = '';
+                }
+            }
+        }
+        // serverInterval('/user/hear','POST',(res)=>{
+            
+        // }, null, 1000)
+    </script>
+    <div id="chattingLog"></div>
+    <input id="chatSend" type="text" value='' onkeydown="sendChatting();">
 </div>
