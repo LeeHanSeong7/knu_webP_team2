@@ -1,3 +1,3 @@
 module.exports ={
-    "viewPath" : __dirname+"/skeleton_views/",
+    "viewPath" : __dirname+"/views/",
 }

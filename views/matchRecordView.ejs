@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Match record</title>
+    <link rel="stylesheet" href="/style/defaultStyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        th, td {
+            text-align: center;
+        }
+
+        table {
+            background-color: #FFFFFF;
+            margin: auto;
+        }
+
+        body {
+            background-image: url(../image/background/8.jpg);
+            background-size: contain;
+            font-family: 'Ubuntu', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./components/navbar') -%>
+        <div>
+            <table class="table table-striped" border="1" style="width:75%">
+                <caption>
+                    <strong style="font-size: 20px;color:#FFFFFF;text-align: center;">Match History</strong>
+                    <a style="font-size: 12px;color:#FFFFFF;text-align: center;">(Last 10 Games)</a>
+                </caption>
+                <% if(histories.length> 10) histories.length = 10; %>
+                    <tr>
+                        <th>Winner</th>
+                        <th>Score</th>
+                        <th>Versus</th>
+                        <th>Loser</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                    <% for (var i=0; i < histories.length;i++) { %>
+                        <tr>
+                            <td>
+                                <%= histories[i].winner %>
+                            </td>
+                            <td>
+                                <%= histories[i].winnerScore %>
+                            </td>
+                            <% if(i==0) { %>
+                                <td rowspan="<%= histories.length %>">
+                                    VS
+                                </td>
+                                <% } %>
+                                    <td>
+                                        <%= histories[i].loser %>
+                                    </td>
+                                    <td>
+                                        <%= histories[i].loserScore %>
+                                    </td>
+                                    <td>
+                                        <%= histories[i].Date.toLocaleString() %>
+                                    </td>
+                        </tr>
+                        <% } %>
+            </table>
+        </div>
+</body>
+
+</html>

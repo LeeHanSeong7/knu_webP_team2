@@ -1,0 +1,44 @@
+<style>
+    #userlist{
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;       
+        display: flex;
+        flex-direction: column
+    }
+    #userlist::-webkit-scrollbar{
+            width: 10px;
+        }
+    #userlist::-webkit-scrollbar-thumb{
+            background-color: #2f3542;
+        }
+    #userlist::-webkit-scrollbar-track{
+            background-color: grey;
+        }
+    h2{
+        text-align: center;
+    }
+</style>
+<div id="userlist">
+    <h2>userlist</h2>
+    <script src='/scripts/serverInterval.js'></script>
+    <script>
+        const parent = document.getElementById('userlist');
+        let listContents = document.createElement('div');
+        parent.appendChild(listContents);
+        const args = [0];
+        serverInterval('/user/list','POST',(res)=>{
+            parent.removeChild(listContents);
+            listContents = document.createElement('div');
+            listContents.style.overflowY = 'scroll';
+            listContents.style.flex = '1';
+            for(let i=0; i<res['data'].length; i++){
+                const newOne = document.createElement('div');
+                newOne.style.fontSize = '20px';
+                newOne.innerText = res['data'][i];
+                listContents.appendChild(newOne);
+            }
+            parent.appendChild(listContents);
+        }, args, 1000)
+    </script>
+</div>

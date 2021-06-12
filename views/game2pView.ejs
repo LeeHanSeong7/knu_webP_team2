@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta name="keywords" content="steven lu, tetris, game, free, javascript, html5, browser, native, iOS, iPhone, iPad, iPad 2, Android, webkit, opera, chrome, touch, safari" />
+    <meta name="description" content="This is a HTML5 tetris game that has wide browser support. It provides innovative intuitive touch controls for Apple iOS iPhone iPad products and also Android devices. " />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <title>Tetris!</title>
+
+    <script src="/tetris_core/strokeText.js"></script>
+    <link rel="stylesheet" href="/style/defaultStyle.css">
+
+    <link rel="stylesheet" href="/tetris_core/page.css" type="text/css" />
+    <script src='/tetris_core/TetrisPlay2P.js' type="text/javascript"></script>
+    <script type='text/javascript'>
+        TETRIS.setScoreIncreasing();
+    </script>
+
+    <script src="/scripts/playOnServer.js"></script>
+    <script>
+        function gameQuitOnclick(){
+            location.href="/game/quit";
+        };
+    </script>
+</head>
+
+<body>
+    <div class="watingDiv">
+        joining...
+        <button onclick="gameQuitOnclick()">quit</button>
+    </div>
+    <div class="gameDiv">
+        <!-- score -->
+        <div id="score_check"> <span id="opponent_score">0</span></div>
+        <div id="score_check"> <span id="player_score">0</span></div>
+
+        <!-- canvas -->
+        <div id="opponent" style="
+            display: flex;
+            flex-direction: column;
+        ">
+            <h2 id="userid"></h2>
+            <canvas id="opponent_board" width="500" height="1200"></canvas>
+        </div>
+        <div id="player" style="
+        display: flex;
+        flex-direction: column;
+        ">
+            <h2 id="userid"></h2>
+            <canvas id="player_board" width="500" height="1200"></canvas>
+            <canvas id="player_shadow" width="500" height="1200"></canvas>
+            <canvas id="player_animated" width="500" height="1200"></canvas>
+        </div>
+
+        <!-- pause -->
+        <div id="instructions" style="position: relative">
+            <div id='controls' style="float: left"></div>
+        </div>
+        <button onclick="gameQuitOnclick()">quit</button>
+    </div>
+    <script>
+        let watingDiv = document.getElementsByClassName('watingDiv')[0];
+        let gameDiv = document.getElementsByClassName('gameDiv')[0];
+        const args = [{"board" : board},null];
+        gameDiv.style.display = 'none';
+        playOnServer((callback_args)=>{
+            switch(callback_args['status']){
+                case ('gaming'):
+                    watingDiv.innerHTML = callback_args['msg'];
+                    watingDiv.style.display = 'none';
+                    gameDiv.style.display = 'block';
+                    //gameDiv.querySelector("#player").querySelector('#userid').innerHTML=callback_args["userid"]                  
+                    //gameDiv.querySelector("#opponent").querySelector('#userid').innerHTML=callback_args["opponent"]
+                     break;
+                case ('join fail'):
+                    gameQuitOnclick();
+                     break;
+                case ('updated'):
+                    let data = callback_args['data'];
+                    DrawOpponent(data['isOver'],data['score'],data['board']);
+                    args[0] = {
+                        "board" : board,
+                        "score" : player_score,
+                        "isOver" : player_over,
+                    };
+                     break;
+                case ('opponent disconnected'):
+                    gameQuitOnclick();
+                     break;
+                case ('match ended'):
+                    gameQuitOnclick();
+                     break;
+                default:
+                    break;         
+            }
+        },args,100);
+    </script>
+</body>
+
+</html>

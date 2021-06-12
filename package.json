@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/LeeHanSeong7/knu_webP_team2#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.12.9"
   }
 }
