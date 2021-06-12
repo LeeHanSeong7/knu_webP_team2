@@ -14,7 +14,7 @@ module.exports = async (req,res) => {
             deleteMatch(room,req.session.userid);
         }
     }
-    let empty = getEmptyRoom(Rooms);
+    let empty = getEmptyRoom(req.session.userid);
     if (empty === false){
         let matchId = newMatch(req.session.userid);
         let timerId = setInterval(()=>{

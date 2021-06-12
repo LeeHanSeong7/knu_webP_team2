@@ -33,11 +33,12 @@ class match {
     }
 }
 
-function getEmptyRoom(Rooms){
+function getEmptyRoom(userid){
     let i=0;
     for(i=i; i<Rooms.length; i++){
         if (Rooms[i] == undefined) continue;
         else if (Rooms[i].checkFull() == false){
+            if (Rooms[i].members.includes(userid)) continue;
             return i;
         }
     }
