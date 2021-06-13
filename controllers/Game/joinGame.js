@@ -16,7 +16,7 @@ module.exports = async (req,res) => {
     }
     else{
         if (room!== false){
-            deleteMatch(matchId,null);
+            deleteMatch(room,null);
         }
     }
 
