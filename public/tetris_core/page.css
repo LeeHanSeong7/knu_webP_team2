@@ -331,7 +331,7 @@ div.currently ul {
     border: solid 5px rgba(53, 53, 53, 1.0);
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 0 4px white;
 }
 
 #pause {
@@ -354,7 +354,7 @@ div.currently ul {
     border: solid 5px rgba(255, 0, 44, 1.0);
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 0 4px white;
 }
 
 #quit:hover {
