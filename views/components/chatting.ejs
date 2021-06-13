@@ -10,6 +10,8 @@
     }
     #chattingLog{
         flex: 1;
+        padding-left: 15px;
+        padding-top: 15px;
     }
     #chatSend{
         width: 100%;
@@ -42,7 +44,7 @@
                 let newchatline = document.createElement("div");
                 newchatline.style.fontSize = '20px';
                 newchatline.style.wordWrap = 'break-word';
-                newchatline.innerText = `${chat.user} : ${chat.text}`;
+                newchatline.innerText = `   ${chat.user} : ${chat.text}`;
                 chattingLog_parent.appendChild(newchatline);
             })
         }, null, 200)
