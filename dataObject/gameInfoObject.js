@@ -73,32 +73,34 @@ async function deleteMatch(matchId, caller){
         let room = gameRooms[myRoom(caller)];
         let opponent = room.opponents(caller)[0];
         let req = {}
-        if (room.gameData[opponent] != undefined && room.gameData[opponent]['isOver'] === true){
-            req.body = {
-                winner: caller,
-                loser: opponent,
-                winnerScore: room.gameData[caller]['score'],
-                loserScore: room.gameData[opponent]['score'],
-            };
-            storeHistory(req,null)
-        }
-        else if(room.gameData[caller] != undefined && room.gameData[caller]['isOver'] === true){
-            req.body = {
-                winner: opponent,
-                loser: caller,
-                winnerScore: room.gameData[opponent]['score'],
-                loserScore: room.gameData[caller]['score'],
-            };
-            storeHistory(req,null)
-        }
-        else{    
-            req.body = {
-                winner: opponent,
-                loser: caller,
-                winnerScore: room.gameData[opponent]['score'],
-                loserScore: 0,
-            };
-            storeHistory(req,null)
+        if (room.gameData[opponent] != undefined && room.gameData[caller] != undefined){
+            if (room.gameData[opponent]['isOver'] === true){
+                req.body = {
+                    winner: caller,
+                    loser: opponent,
+                    winnerScore: room.gameData[caller]['score'],
+                    loserScore: room.gameData[opponent]['score'],
+                };
+                storeHistory(req,null)
+            }
+            else if(room.gameData[caller]['isOver'] === true){
+                req.body = {
+                    winner: opponent,
+                    loser: caller,
+                    winnerScore: room.gameData[opponent]['score'],
+                    loserScore: room.gameData[caller]['score'],
+                };
+                storeHistory(req,null)
+            }
+            else{    
+                req.body = {
+                    winner: opponent,
+                    loser: caller,
+                    winnerScore: room.gameData[opponent]['score'],
+                    loserScore: 0,
+                };
+                storeHistory(req,null)
+            }
         }
     }
     gameRooms[matchId] = undefined;
