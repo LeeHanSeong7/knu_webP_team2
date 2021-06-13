@@ -28,9 +28,7 @@ function login(userid, session_id){
 function sayToUsers(userid,str){
     const users = Object.keys(userList);
     users.forEach((user)=>{
-        if (user != userid){
-            user.chatBuf.push({"user":userid, "text":str});
-        }
+        userList[user].chatBuf.push({"user":userid, "text":str});
     });
 }
 

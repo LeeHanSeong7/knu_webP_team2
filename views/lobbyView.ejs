@@ -85,7 +85,6 @@
             display: flex;
             flex-direction: row;
             flex:1;
-            background-color: rgba(122,122,122,0.7);
         }
         .buttomContainer{
             flex:1;
@@ -156,10 +155,10 @@
             </div>
         </div>
         <div class="chatContainer">
-            <div style="flex : 2">
+            <div style="flex : 2; max-width: 67%;">
                 <%- include('./components/chatting') -%>
             </div>
-            <div style="flex : 1">
+            <div style="flex : 1; max-width: 33%;">
                 <%- include('./components/userlist') -%>
             </div>
         </div>

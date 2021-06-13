@@ -6,11 +6,13 @@ async function serverInterval(route,method,callback, args, interval){
             });
             res = await res.json();
             callback(res);
-            console.log("test");
         }
         else{
             let res = await fetch(route,{
                 'method':method,
+                'headers':{
+                    'Content-Type' : 'application/json',
+                },
                 'body': JSON.stringify(args[0]),
             });
             res = await res.json();
