@@ -1,5 +1,6 @@
 var board;
 var player_over = false;
+var player_clear = false;
 var player_score;
 
 function DrawOpponent(opponent_over, opponent_score, opponent_board) {
@@ -11,15 +12,8 @@ function DrawOpponent(opponent_over, opponent_score, opponent_board) {
     drawBoard(opponent_board, ctx1);
 }
 
-var MovingSpeedUpdate = setInterval(function() {
-    var oppo_score = document.getElementById("opponent_score").innerHTML;
-    clearInterval(autoMoveDownInterval);
-    if (300 - parseInt(oppo_score / 8) >= 30) {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300 - parseInt(oppo_score / 10));
-    } else {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 30);
-    }
-}, 1000);
+var MovingSpeedUpdate = "";
+var DropDelay = 300;
 
 function random_det(seed) {
     return function() {
@@ -137,23 +131,23 @@ function updateSizing() {
     var ac = document.getElementById('player_animated');
     var sc = document.getElementById('player_shadow');
     //var ph = document.getElementById('placeholder');
-    var score_oppo = document.getElementById('opponent_score').parentNode;
-    var score_el = document.getElementById('player_score').parentNode;
+    var score_oppo = document.getElementById('opponent_check');
+    var score_el = document.getElementById('score_check');
     oppo.width = bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
     oppo.height = bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
-    oppo.style.left = window.innerWidth / 5 + 'px';
+    positionFromLeft = window.innerWidth * 0.5; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
+    oppo.style.left = positionFromLeft - oppo.width - 10 + 'px';
     //ph.style.height = (yoff*2+ysize*24+gapsize*23)+"px";
     //ph.style.width = ((xoff*2 + xsize*10 + gapsize*9)+180)+"px";
 
     // this is to set the absolute positioning in the center of the window.
     // note -- window.innerWidth/Height not supported by IE
-    positionFromLeft = window.innerWidth / 10 + window.innerWidth / 5 + oppo.width; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
-    bc.style.left = ac.style.left = sc.style.left = positionFromLeft + "px";
+    bc.style.left = ac.style.left = sc.style.left = positionFromLeft + 10 + "px";
 
-    score_oppo.style.width = window.innerWidth / 16 + 'px';
-    score_oppo.style.left = window.innerWidth / 5 - window.innerWidth / 16 + "px";
+    score_oppo.style.width = window.innerWidth / 8 + 'px';
+    score_oppo.style.left = positionFromLeft - oppo.width - window.innerWidth * 0.17 - 20 + 'px';
     score_el.style.width = window.innerWidth / 16 + 'px';
-    score_el.style.left = positionFromLeft + bc.width + 10 + "px";
+    score_el.style.left = positionFromLeft + bc.width + 20 + "px";
 
     var ctx1 = document.getElementById('player_board').getContext('2d');
     drawBoard(board, ctx1);
@@ -560,6 +554,7 @@ function gameWin() {
     var ac = document.getElementById('player_animated');
     clearContext(ac.getContext('2d'), ac.width, ac.height);
     drawMessage(" You Win!", 1.45);
+    player_clear = true;
     setPause();
 }
 
@@ -636,16 +631,15 @@ moves = [
     // left
     function() {
         if (freezeInteraction) return;
+        pieceX -= 1;
+        if (isPieceInside()) pieceX += 1;
         pieceY += 1;
         if (isPieceInside()) {
             pieceY -= 1;
             fixPiece();
-        }
-        else{
+        } else {
             pieceY -= 1;
         }
-        pieceX -= 1;
-        if (isPieceInside()) pieceX += 1;
         shiftright = 0;
         updateShadow();
         clearLockTimer();
@@ -660,16 +654,15 @@ moves = [
     // right
     function() {
         if (freezeInteraction) return;
+        pieceX += 1;
+        if (isPieceInside()) pieceX -= 1;
         pieceY += 1;
         if (isPieceInside()) {
             pieceY -= 1;
             fixPiece();
-        }
-        else{
+        } else {
             pieceY -= 1;
         }
-        pieceX += 1;
-        if (isPieceInside()) pieceX -= 1;
         shiftright = 1;
         updateShadow();
         clearLockTimer();
@@ -682,6 +675,7 @@ moves = [
             pieceY -= 1;
             fixPiece();
         }
+        updateShadow();
         clearLockTimer();
     },
     // rotate clockwise
@@ -910,9 +904,18 @@ function isPaused() {
 
 
 function unPause() {
-    if (!paused) return;
+    if (!paused || player_over || player_clear) return;
+    if (MovingSpeedUpdate == "") {
+        MovingSpeedUpdate = setInterval(function() {
+            var oppo_score = document.getElementById("opponent_score").innerHTML;
+            DropDelay = 300 - parseInt(oppo_score / 8);
+            if (DropDelay < 100) {
+                DropDelay = 100;
+            }
+        }, 5000);
+    }
     if (autoMoveDownInterval == "") {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300);
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
     }
     if (animationUpdateInterval == "") {
         animationUpdateInterval = setInterval(animationUpdateIntervalFunc, 16);
