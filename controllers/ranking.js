@@ -6,7 +6,5 @@ module.exports = async (req,res) => {
     const histories = await History.find({}).sort({winnerScore: 'desc'});
     const users = await User.find({}).sort({rate: 'desc'});
 
-    const userid = req.session.userid; 
-    
-    res.render(config.viewPath+'rankingView.ejs', {users, histories, userid});
+    res.render(config.viewPath+'rankingView.ejs', {users, histories});
 }
