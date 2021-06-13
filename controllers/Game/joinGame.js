@@ -5,15 +5,21 @@ const getEmptyRoom = require('../../dataObject/gameInfoObject').getEmptyRoom;
 const deleteMatch = require('../../dataObject/gameInfoObject').deleteMatch;
 
 module.exports = async (req,res) => {
-    let tryCount = 600;
+    let tryCount = 6000;
     const interval = 100;
 
+    let room = myRoom(req.session.userid);
     if (req.session.status == "gaming"){
-        let room = myRoom(req.session.userid);
         if (room !== false){
             deleteMatch(room,req.session.userid);
         }
     }
+    else{
+        if (room!== false){
+            return false;
+        }
+    }
+
     let empty = getEmptyRoom(req.session.userid);
     if (empty === false){
         let matchId = newMatch(req.session.userid);

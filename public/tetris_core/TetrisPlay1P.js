@@ -1305,7 +1305,6 @@ var TETRIS = new function() { // namespacing
         next();
         applyScore(0); // to init
         setPause(false);
-        unPause();
 
         var animCtx = document.getElementById('player_animated').getContext('2d');
         set_textRenderContext(animCtx);

@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('./dataObject/DBObject');
 const app = new express();
 
@@ -6,7 +7,7 @@ const expressSession = require('express-session');
 app.use(expressSession({
     secret: 'keyboard cat'
 }));
-
+app.use(cors());
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
 

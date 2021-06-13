@@ -15,7 +15,7 @@ function getUserList(){
     return Object.keys(userList);
 }
 
-function login(userid, session_id){
+async function login(userid, session_id){
     if (Object.keys(userList).includes(userid)){
         userList[userid].touch();
         userList[userid].lastSession = session_id;
@@ -25,10 +25,12 @@ function login(userid, session_id){
     }
 }
 
-function sayToUsers(userid,str){
+async function sayToUsers(userid,list){
     const users = Object.keys(userList);
     users.forEach((user)=>{
-        userList[user].chatBuf.push({"user":userid, "text":str});
+        list.forEach((str)=>{
+            userList[user].chatBuf.push({"user":userid, "text": str});
+        })
     });
 }
 

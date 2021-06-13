@@ -2,13 +2,14 @@ const History = require('../../models/History.js')
 const User = require('../../models/User.js')
 
 module.exports = async (req, res) => {
+    if (req.body === undefined) return;
     const {winner, loser} = req.body;
 
     await History.create(req.body, (error, history) => {
-        if (error) {
-            console.log(error)
-            return res.redirect('/lobby')
-        }
+        // if (error) {
+        //     console.log(error)
+        //     return res.redirect('/lobby')
+        // }
     })
     
     let winners = await User.findOne({username: winner});
