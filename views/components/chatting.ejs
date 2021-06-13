@@ -42,7 +42,7 @@
                 let newchatline = document.createElement("div");
                 newchatline.style.fontSize = '20px';
                 newchatline.style.wordWrap = 'break-word';
-                newchatline.innerText = `${chat.user}(User) : ${chat.text}`;
+                newchatline.innerText = `${chat.user} : ${chat.text}`;
                 chattingLog_parent.appendChild(newchatline);
             })
         }, null, 200)
