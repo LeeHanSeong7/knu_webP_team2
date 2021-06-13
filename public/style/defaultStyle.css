@@ -3,8 +3,9 @@ body{
     padding: 0;
     overflow:hidden;
     height: 100vh;
+    font-family: 'Ubuntu', sans-serif;
 }
 
-#default{
-    transform: scale(5,5);
+nav{
+    font-family: 'Ubuntu', sans-serif;
 }

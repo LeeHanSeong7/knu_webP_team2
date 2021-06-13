@@ -22,11 +22,11 @@ body {
 }
 
 a.title:nth-child(2n+1) {
-    color: rgba(0, 172, 168, 1.0)
+    color: rgba(0, 172, 168, 1.0);
 }
 
 a.title:nth-child(2n) {
-    color: rgba(255, 0, 44, 1.0)
+    color: rgba(255, 0, 44, 1.0);
 }
 .un {
     width: 76%;
