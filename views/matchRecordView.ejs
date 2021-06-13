@@ -9,12 +9,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <style>
-        th,
-        td {
+        th, td {
             text-align: center;
             font-size: large;
             padding: 5px;
-            background: rgba(0, 172, 168, 0.05);
         }
 
         .lose {
@@ -29,6 +27,7 @@
         tr {
             border-radius: 1em;
             overflow: hidden;
+            background: rgba(0, 172, 168, 0.05);
         }
 
         table {
@@ -61,7 +60,7 @@
         <div>
             <table align="center" style="width:75%">
                 <caption>
-                    <strong style="font-size: 20px;color:#FFFFFF;text-align: center;">Match Record</strong>
+                    <strong>Match Record</strong>
                     <a style="font-size: 12px;color:#FFFFFF;text-align: center;">(Last 10 Games)</a>
                 </caption>
                 <% if(histories.length> 10) histories.length = 10; %>
