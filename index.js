@@ -17,7 +17,7 @@ const controllers = {
     "game2p" : require('./controllers/game2p'),
     "matchRecord" : require('./controllers/matchRecord'),
     "ranking" : require('./controllers/ranking'),
-    "signUp" : require('./controllers/signup'),
+    "signUp" : require('./controllers/signUp'),
     "status" : require('./controllers/status'),
     "storeUser" : require('./controllers/User/storeUser'),
     "storeHistory" : require('./controllers/Record/storeHistory'),
