@@ -1,4 +1,5 @@
 body {
+    overflow: hidden;
     background-image: url(../image/background/8.jpg);
     background-size: cover;
     font-family: 'Ubuntu', sans-serif;
