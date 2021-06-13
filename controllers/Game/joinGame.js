@@ -14,51 +14,47 @@ module.exports = async (req,res) => {
             deleteMatch(room,req.session.userid);
         }
     }
-    else{
-        if (room!== false){
-            return false;
+    else if (room == false){
+        let empty = getEmptyRoom(req.session.userid);
+        if (empty === false){
+            let matchId = newMatch(req.session.userid);
+            let timerId = setInterval(()=>{
+                tryCount += -1;
+                if (tryCount == 0 || Rooms[matchId] === undefined){
+                    clearInterval(timerId);
+                    deleteMatch(matchId,null);
+                    res.json({
+                        "res" : "false",
+                        "status" : req.session.status,
+                    });
+                }
+                else if (Rooms[matchId].checkFull() == true){
+                    clearInterval(timerId);
+                    req.session.status = "gaming";
+                    req.session.matchId = matchId;
+                    Rooms[matchId].lastConnect[req.session.userid] = new Date();
+                    let opponent = Rooms[matchId].opponents(req.session.userid)[0];
+                    res.json({
+                        "res" : "true",
+                        "status" : req.session.status,
+                        "matchId" : req.session.matchId,
+                        "opponent" : opponent,
+                    });
+                }
+            },interval);
         }
-    }
-
-    let empty = getEmptyRoom(req.session.userid);
-    if (empty === false){
-        let matchId = newMatch(req.session.userid);
-        let timerId = setInterval(()=>{
-            tryCount += -1;
-            if (tryCount == 0 || Rooms[matchId] === undefined){
-                clearInterval(timerId);
-                deleteMatch(matchId,null);
-                res.json({
-                    "res" : "false",
-                    "status" : req.session.status,
-                });
-            }
-            else if (Rooms[matchId].checkFull() == true){
-                clearInterval(timerId);
-                req.session.status = "gaming";
-                req.session.matchId = matchId;
-                Rooms[matchId].lastConnect[req.session.userid] = new Date();
-                let opponent = Rooms[matchId].opponents(req.session.userid)[0];
-                res.json({
-                    "res" : "true",
-                    "status" : req.session.status,
-                    "matchId" : req.session.matchId,
-                    "opponent" : opponent,
-                });
-            }
-        },interval);
-    }
-    else{
-        Rooms[empty].join(req.session.userid);
-        req.session.status = "gaming";
-        req.session.matchId = empty;
-        let opponent = Rooms[empty].opponents(req.session.userid)[0];
-
-        res.send({
-            "res" : "true",
-            "status" : req.session.status,
-            "matchId" : req.session.matchId,
-            "opponent" : opponent,
-        });
+        else{
+            Rooms[empty].join(req.session.userid);
+            req.session.status = "gaming";
+            req.session.matchId = empty;
+            let opponent = Rooms[empty].opponents(req.session.userid)[0];
+    
+            res.send({
+                "res" : "true",
+                "status" : req.session.status,
+                "matchId" : req.session.matchId,
+                "opponent" : opponent,
+            });
+        }
     }
 }
