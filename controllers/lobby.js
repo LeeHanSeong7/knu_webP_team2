@@ -1,5 +1,8 @@
 const config = require('../testConfig');
 
 module.exports = (req,res) => {
-    res.render(config.viewPath+'lobbyView.ejs');
+
+    const userid = req.session.userid;
+
+    res.render(config.viewPath+'lobbyView.ejs', {userid});
 }
