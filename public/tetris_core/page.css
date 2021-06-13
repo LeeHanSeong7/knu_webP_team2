@@ -314,6 +314,8 @@ div.currently ul {
 }
 
 #instructions>input {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(147, 153, 210, 0.56);
     opacity: 20%;
     border-radius: 2em;
     width: 12vw;
@@ -323,7 +325,7 @@ div.currently ul {
     border: 0;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 0 4px white;
 }
 
 #pause {
@@ -346,7 +348,7 @@ div.currently ul {
     border: 0;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 0 4px white;
 }
 
 #quit:hover {
