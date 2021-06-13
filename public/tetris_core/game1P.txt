@@ -1,13 +1,31 @@
-var board;
-var player_over = false;
-var player_score;
+// board        = 테트리스 판(compiled block 포함)(고정값)
+//drawboard -> drawbox -> drawbox2 를 통해 board 를 업데이트 및 id = boar_canvas에 표현
+
+//animPositionX = Moving block의 x 좌표(연속값)
+//animPositionY = Moving block의 y 좌표(연속값)
+//animRotation  = Moving block의 회전 정도(연속값)(rotation command 시 pi/2로 초기화(회전값) -> 점점 0에 수렴(고정))
+//unPause -> (moveDownIntervalFunc, animationUpdateIntervalFunc) 를 통해 위의 세가지를 업데이트
+//업데이트한 정보를 updatePiece-> drawPiece를 통해 id = player_animated에 표현
+
+
+//curPiece      = Moving block의 블록 종류 넘버(0 ~ 6)(상수값)
+//block이 fix되면 next() 함수의 generator()를 통해 업데이트
+
+//curRotation   = Moving block의 회전 넘버(0 ~ 3)(상수값)
 
 
 var DropDelay = 300;
 
-var MovingSpeedUpdate = "";
-
-
+var MovingSpeedUpdate = setInterval(function() {
+    clearInterval(autoMoveDownInterval);
+    console.log("100")
+    DropDelay -= 30;
+    if (DropDelay >= 30) {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
+    } else {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 30);
+    }
+}, 1000);
 
 function random_det(seed) {
     return function() {
@@ -20,14 +38,6 @@ function random_det(seed) {
         seed = ((seed ^ 0xb55a4f09) ^ (seed >>> 16)) & 0xffffffff;
         //return (seed >>> 0) / 0xffffffff;
         return (seed >>> 0);
-    };
-}
-
-// generator to mod PRNG by 7
-function random_det_7(seed) {
-    var gen = random_det(seed);
-    return function() {
-        return gen() % 7;
     };
 }
 
@@ -63,7 +73,7 @@ function random_perm_single(seed) {
     };
 }
 
-board = new Array();
+var board = new Array(24);
 var i = 0;
 var j = 0;
 for (i = 0; i < 24; i++) {
@@ -111,13 +121,11 @@ function drawBoard(boardArr, context) {
     context.fillRect(xoff, yoff, (xsize + gapsize) * 10 - gapsize, (ysize + gapsize) * 24 - gapsize);
     for (i = 0; i < 24; i++) {
         for (j = 0; j < 10; j++) {
-            drawBox(i * 10 + j, boardArr[i][j], context);
+            drawBox(i * 10 + j, board[i][j], context);
         }
     }
 }
 var positionFromLeft = 0;
-var positionFromTop = 50;
-
 
 function updateSizing() {
     xsize = ysize = Math.floor((window.innerHeight - 25 - yoff * 2 - 24 * gapsize) / 24.0);
@@ -126,7 +134,7 @@ function updateSizing() {
     var ac = document.getElementById('player_animated');
     var sc = document.getElementById('player_shadow');
     //var ph = document.getElementById('placeholder');
-    var score_el = document.getElementById('score_check');
+    var score_el = document.getElementById('score').parentNode;
     bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
     bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
     //ph.style.height = (yoff*2+ysize*24+gapsize*23)+"px";
@@ -139,15 +147,13 @@ function updateSizing() {
 
     // this is to set the absolute positioning in the center of the window.
     // note -- window.innerWidth/Height not supported by IE
-    positionFromLeft = window.innerWidth * 0.38; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
+    positionFromLeft = window.innerWidth / 10 + window.innerWidth / 5; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
     bc.style.left = ac.style.left = sc.style.left = positionFromLeft + "px";
 
     document.getElementById('instructions').style.left = positionFromLeft + bc.width + 10 + "px";
     score_el.style.left = positionFromLeft + bc.width + 10 + "px";
-    score_el.style.width = window.innerWidth / 6 + 'px';
-    score_el.style.top = positionFromTop + 'px';
 
-    document.getElementById('instructions').style.top = positionFromTop + score_el.clientHeight + "px";
+    document.getElementById('instructions').style.top = score_el.clientHeight + "px";
 
 
     var ctx1 = document.getElementById('player_board').getContext('2d');
@@ -164,7 +170,7 @@ function clearRowCheck(startrow, numrowsdown) {
         var j;
         var full = true;
         for (j = 0; j < 10; j++) {
-            if (startrow + i >= 0 && !board[startrow + i][j]) full = false;
+            if (!board[startrow + i][j]) full = false;
         }
         if (full) {
             numRowsCleared++;
@@ -232,7 +238,59 @@ function toggleMouseControl() {
 
 var paused = false;
 
+function isPaused() {
+    return paused;
+}
 
+
+function drawPaused() {
+    var ctx = document.getElementById("player_animated").getContext('2d');
+    var offset = xoff;
+    var size = (xsize + gapsize * .9) * 2.05;
+    var yoffset = yoff + (xsize + gapsize) * 10;
+    ctx.strokeStyle = "#FFF";
+    ctx.strokeText("PAUSED", offset, yoffset, size, 160);
+    ctx.strokeStyle = "#000";
+    ctx.strokeText("PAUSED", offset, yoffset, size, 100);
+}
+var setPause = function(isendgame) {
+    //console.log("setPause invoked", paused);
+    if (paused) return;
+    clearInterval(autoMoveDownInterval);
+    autoMoveDownInterval = "";
+    clearInterval(animationUpdateInterval);
+    animationUpdateInterval = "";
+    clearInterval(mouseControlInterval);
+    mouseControlInterval = "";
+    clearInterval(MovingSpeedUpdate);
+    MovingSpeedUpdate = "";
+    if (!isendgame) {
+        drawPaused();
+        document.title = "Tetris! PAUSED";
+    }
+    paused = true;
+    pausedBecauseLostFocus = false; // default this to false
+
+}
+
+
+function unPause() {
+    if (!paused) return;
+    if (autoMoveDownInterval == "") {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
+    }
+    if (animationUpdateInterval == "") {
+        animationUpdateInterval = setInterval(animationUpdateIntervalFunc, 16);
+    }
+    if (mouseControlInterval == "") {
+        mouseControlInterval = setInterval(mouseControlFunc, 100); //function indirection
+    }
+    paused = false;
+    pausedBecauseLostFocus = false; // default this to false
+    document.title = "Tetris!";
+    // chrome doesn't seem to update titlebar correctly sometimes. similar thing in safari.
+    // Can't figure out a way to force it. Works great in FF.
+}
 
 var control_accum = [-1, -1];
 
@@ -360,6 +418,25 @@ function drawTouches() { // Not really drawing so much as managing and moving a 
     }
 
 }
+window.onload = function() { win_onload(); };
+
+function win_onload() {
+    next();
+    setPause(false);
+    unPause();
+
+    var animCtx = document.getElementById('player_animated').getContext('2d');
+    set_textRenderContext(animCtx);
+    if (check_textRenderContext(animCtx)) {
+
+    } else {
+        //alert("No text available"); 
+    }
+
+    // required to make the range actually settable 
+    updateSizing();
+}
+
 // coordinate systems follow convention starting at top-left. 
 // order is that of clockwise rotation.
 // row-major layout.
@@ -371,7 +448,7 @@ function drawTouches() { // Not really drawing so much as managing and moving a 
 // all possible cases
 var tetromino_Z = [
     [
-        [1, 1, 0],
+        [1, 1],
         [0, 1, 1]
     ],
     [
@@ -482,6 +559,7 @@ var tetromino_L = [
 ];
 var tetromino_I = [
     [
+        [],
         [7, 7, 7, 7]
     ],
     [
@@ -503,7 +581,7 @@ var tetromino_I = [
     ]
 ];
 // tetromino geometry data
-var tetrominos = [tetromino_Z, tetromino_S, tetromino_J, tetromino_T, tetromino_O, tetromino_L, tetromino_I, ];
+var tetrominos = [tetromino_Z, tetromino_S, tetromino_J, tetromino_T, tetromino_O, tetromino_L, tetromino_I];
 // this is for the rotation animation -- must know where in local
 // grid did the piece rotate around
 // each coordinate is a triple, the first two are x,y, and 
@@ -555,13 +633,12 @@ function gameWin() {
     clearContext(sc.getContext('2d'), sc.width, sc.height);
     var ac = document.getElementById('player_animated');
     clearContext(ac.getContext('2d'), ac.width, ac.height);
-    drawMessage(" You Win!", 1.45);
+    drawMessage("You Win!", 1.45);
     setPause(true);
 }
 
 function gameOver() {
     drawMessage("Game Over", 1.45);
-    player_over = true;
     setPause(true);
     //Cleanup
 
@@ -634,16 +711,6 @@ moves = [
         if (freezeInteraction) return;
         pieceX -= 1;
         if (isPieceInside()) pieceX += 1;
-        pieceY += 1;
-        if (isPieceInside()) {
-            pieceY -= 1;
-            setTimeout(() => {
-                setpau
-                fixPiece();
-            }, 1000);
-        } else {
-            pieceY -= 1;
-        }
         shiftright = 0;
         updateShadow();
         clearLockTimer();
@@ -660,13 +727,6 @@ moves = [
         if (freezeInteraction) return;
         pieceX += 1;
         if (isPieceInside()) pieceX -= 1;
-        pieceY += 1;
-        if (isPieceInside()) {
-            pieceY -= 1;
-            fixPiece();
-        } else {
-            pieceY -= 1;
-        }
         shiftright = 1;
         updateShadow();
         clearLockTimer();
@@ -679,7 +739,6 @@ moves = [
             pieceY -= 1;
             fixPiece();
         }
-        updateShadow();
         clearLockTimer();
     },
     // rotate clockwise
@@ -883,71 +942,6 @@ for (i = 0; i < buttonList.length; ++i) buttonStates[i] = 0;
 // these variables keep track of button state in order to customize
 // key repeat rates
 
-var setPause = function(isendgame) {
-    //console.log("setPause invoked", paused);
-    if (paused) return;
-    clearInterval(autoMoveDownInterval);
-    autoMoveDownInterval = "";
-    clearInterval(animationUpdateInterval);
-    animationUpdateInterval = "";
-    clearInterval(mouseControlInterval);
-    mouseControlInterval = "";
-    clearInterval(MovingSpeedUpdate);
-    MovingSpeedUpdate = "";
-    if (!isendgame) {
-        drawPaused();
-        document.title = "Tetris! PAUSED";
-    }
-    paused = true;
-    pausedBecauseLostFocus = false; // default this to false
-
-}
-
-function drawPaused() {
-    var ctx = document.getElementById("player_animated").getContext('2d');
-    var offset = xoff;
-    var size = (xsize + gapsize * .9) * 2.05;
-    var yoffset = yoff + (xsize + gapsize) * 10;
-    ctx.strokeStyle = "#FFF";
-    ctx.strokeText("PAUSED", offset, yoffset, size, 160);
-    ctx.strokeStyle = "#000";
-    ctx.strokeText("PAUSED", offset, yoffset, size, 100);
-}
-
-function isPaused() {
-    return paused;
-}
-
-
-function unPause() {
-    if (!paused || player_over) return;
-    if (MovingSpeedUpdate == "") {
-        MovingSpeedUpdate = setInterval(function() {
-            console.log(DropDelay)
-            DropDelay -= 20;
-            if (DropDelay < 100) {
-                DropDelay = 100;
-            }
-            clearInterval(autoMoveDownInterval)
-            autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
-        }, 5000);
-    }
-    if (autoMoveDownInterval == "") {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
-    }
-    if (animationUpdateInterval == "") {
-        animationUpdateInterval = setInterval(animationUpdateIntervalFunc, 16);
-    }
-    if (mouseControlInterval == "") {
-        mouseControlInterval = setInterval(mouseControlFunc, 100); //function indirection
-    }
-    paused = false;
-    pausedBecauseLostFocus = false; // default this to false
-    document.title = "Tetris!";
-    // chrome doesn't seem to update titlebar correctly sometimes. similar thing in safari.
-    // Can't figure out a way to force it. Works great in FF.
-}
-
 function keydownfunc(e) {
     var keynum;
     if (!(e.which)) keynum = e.keyCode;
@@ -957,7 +951,7 @@ function keydownfunc(e) {
     //document.title = keynum;
 
     if (keychar == 'P') {
-        if (paused && !player_over) unPause();
+        if (paused) unPause();
         else { setPause(false); return; }
     }
     if (paused) return;
@@ -1013,10 +1007,10 @@ function drawPieceOld(context) {
     for (i=0;i<tetkj.length;i++) {
       var tetkji = tetkj[i];
       if (tetkji) {
-        context.save();
-        context.rotate(10.0*3.1415926/180.0);
+	    context.save();
+		context.rotate(10.0*3.1415926/180.0);
         drawBox2(animPositionX+i,animPositionY+j,tetkji,context);
-        context.restore();
+		context.restore();
       }
     }
   }
@@ -1122,16 +1116,16 @@ function mousemovefunc(e) {
             document.documentElement.scrollTop;
     }
     /*if (!e) e = event;
-if (e.pageX || e.pageY) {
-posx = e.pageX;
-posy = e.pageY;
-}
-else if (e.clientX || e.clientY) {
-posx = e.clientX + document.body.scrollLeft
-  + document.documentElement.scrollLeft;
-posy = e.clientY + document.body.scrollTop
-  + document.documentElement.scrollTop;
-} */
+  if (e.pageX || e.pageY) {
+    posx = e.pageX;
+    posy = e.pageY;
+  }
+  else if (e.clientX || e.clientY) {
+    posx = e.clientX + document.body.scrollLeft
+      + document.documentElement.scrollLeft;
+	posy = e.clientY + document.body.scrollTop
+	  + document.documentElement.scrollTop;
+  } */
 
     //if (!(Math.floor((posx/5-100-(xsize+gapsize)*pieceX)/(xsize+gapsize)) <= 0)) moves[2]();
     //if (Math.floor((posx/5-100-(xsize+gapsize)*pieceX)/(xsize+gapsize))< 0) moves[0]();
@@ -1142,6 +1136,18 @@ posy = e.clientY + document.body.scrollTop
 
 var pausedBecauseLostFocus = false;
 
+function losefocusfunc() {
+    if (paused) return;
+    setPause(false);
+    pausedBecauseLostFocus = true;
+}
+
+function gainfocusfunc() {
+    if (paused && pausedBecauseLostFocus) {
+        unPause();
+    }
+}
+
 function mousedownfunc(e) {
     if (isMouseControl) {
         if (e.which == 1) {
@@ -1151,9 +1157,10 @@ function mousedownfunc(e) {
         }
     }
 }
+var score = 1000;
 var isScoreIncreasing = false;
 
-var scoreCallback = function(val) {}; // I get called when player_score changes. 
+var scoreCallback = function(val) {}; // I get called when score changes. 
 
 function applyScore(amount) {
     if (isScoreIncreasing) {
@@ -1161,169 +1168,128 @@ function applyScore(amount) {
     } else {
         subtractScore(amount);
     }
-    scoreCallback(player_score);
+    scoreCallback(score);
 }
 
 function increaseScore(amount) {
-    player_score += amount;
-    document.getElementById('player_score').innerHTML = player_score;
+    score += amount;
+    document.getElementById('score').innerHTML = score;
 }
 
 function subtractScore(amount) {
-    player_score -= amount;
-    if (player_score <= 0) { // reached zero 
+    score -= amount;
+    if (score <= 0) { // reached zero 
         gameWin();
-        player_score = 0;
+        score = 0;
     }
-    document.getElementById('player_score').innerHTML = player_score;
+    document.getElementById('score').innerHTML = score;
 }
-
-document.onkeydown = function(e) { keydownfunc(e); };
-document.onkeyup = function(e) { keyupfunc(e); };
-document.onmousemove = function(e) { mousemovefunc(e); };
-// window.onblur = function() { losefocusfunc(); };
-// window.onfocus = function() { gainfocusfunc(); };
-document.onmousedown = function(e) { mousedownfunc(e); };
-
-// for iOS preventing default scroll
-document.ontouchmove = function(e) { doc_otm(e); };
-
-function doc_otm(e) {
-
-    drawTouches(); // presumably some fingers need to be updated
-    if (control_finger_id != -1) { // control finger active
-        for (var i = 0; i < e.changedTouches.length; ++i) { // search moved fingers for control finger
-            if (e.changedTouches[i].identifier == control_finger_id) { // found it
-                // verify a past position exists (it should) 
-                if (control_location[0] < 0 || control_location[1] < 0) {
-                    alert("control_location not set!");
-                }
-                Control([e.changedTouches[i].clientX, e.changedTouches[i].clientY]);
-            }
-        }
-    }
-    e.preventDefault();
-
-};
-
-var touchlist = [];
-
-var lastTouchID = -1; // used for tracking potential taps 
-var lastTouchStartTime = 0;
-
-document.ontouchstart = function(e) { doc_ots(e); };
-
-function doc_ots(e) {
-    touchlist = (e.touches);
-    //	for (var i =0;i<touchlist.length;++i) { 
-    //		console.log(i+": "+touchlist[i].identifier+" at "+touchlist[i].clientX+","+touchlist[i].clientY);
-    //	}
-
-    if (e.touches.length == 1) { // set this finger as control
-        control_finger_id = e.touches[0].identifier;
-        // initialize control_location 
-        control_location = [e.touches[0].clientX, e.touches[0].clientY];
-        // initialize control_accum
-        control_accum = [0, 0];
-    }
-
-    if (e.changedTouches.length == 1) {
-        lastTouchID = e.changedTouches[0].identifier;
-        lastTouchStartTime = new Date().getTime();
-    }
-
-    drawTouches();
-
-};
-
-var control_finger_id = -1;
-var control_location = [-1, -1]; // last location: -1 indicates undefined
-
-document.ontouchend = function(e) { doc_ote(e); };
-
-function doc_ote(e) {
-    touchlist = e.touches;
-    for (var i = 0; i < e.changedTouches.length; i++) {
-        if (e.changedTouches[i].identifier == control_finger_id) {
-            // Easy way out: defer control to first of remaining fingers
-            if (e.touches.length > 0) {
-                control_finger_id = e.touches[0].identifier;
-                control_location = [e.touches[0].clientX, e.touches[0].clientY];
-            } else {
-                control_finger_id = -1;
-                control_location = control_accum = [-1, -1];
-            }
-            //break;
-            //entry point for hard drop 
-            hardDropTest(e.changedTouches[i].clientX, e.changedTouches[i].clientY);
-        }
-        if (!paused && e.changedTouches[i].identifier == lastTouchID && new Date().getTime() - lastTouchStartTime < 300) {
-            moves[4]();
-        }
-    }
-    drawTouches();
-};
-
-
-// document.ontouchend  document.ontouch
-
-function flatten(obj, levels) {
-    if (levels == 0) return '';
-    var empty = true;
-    if (obj instanceof Array) {
-        str = '[';
-        empty = true;
-        for (var i = 0; i < obj.length; i++) {
-            empty = false;
-            str += flatten(obj[i], levels - 1) + ', ';
-        }
-        return (empty ? str : str.slice(0, -2)) + ']';
-    } else if (obj instanceof Object) {
-        str = '{';
-        empty = true;
-        for (i in obj) {
-            empty = false;
-            str += i + '->' + flatten(obj[i], levels - 1) + ', ';
-        }
-        return (empty ? str : str.slice(0, -2)) + '}';
-    } else {
-        return obj; // not an obj, don't stringify me
-    }
-}
-
-window.onselectstart = function(e) { return false; }
-    // no IE
-window.onresize = function() { win_onresize(); };
-
-function win_onresize() {
-    updateSizing();
-};
 
 var TETRIS = new function() { // namespacing
-    // HERE IS THE API
+    document.onkeydown = function(e) { keydownfunc(e); };
+    document.onkeyup = function(e) { keyupfunc(e); };
+    document.onmousemove = function(e) { mousemovefunc(e); };
+    window.onblur = function() { losefocusfunc(); };
+    window.onfocus = function() { gainfocusfunc(); };
+    document.onmousedown = function(e) { mousedownfunc(e); };
 
-    function win_onload() {
-        next();
-        applyScore(0); // to init
-        setPause(false);
-        unPause();
+    // for iOS preventing default scroll
+    document.ontouchmove = function(e) { doc_otm(e); };
 
-        var animCtx = document.getElementById('player_animated').getContext('2d');
-        set_textRenderContext(animCtx);
-        if (check_textRenderContext(animCtx)) {
+    function doc_otm(e) {
 
-        } else {
-            //alert("No text available"); 
+        drawTouches(); // presumably some fingers need to be updated
+        if (control_finger_id != -1) { // control finger active
+            for (var i = 0; i < e.changedTouches.length; ++i) { // search moved fingers for control finger
+                if (e.changedTouches[i].identifier == control_finger_id) { // found it
+                    // verify a past position exists (it should) 
+                    if (control_location[0] < 0 || control_location[1] < 0) {
+                        alert("control_location not set!");
+                    }
+                    Control([e.changedTouches[i].clientX, e.changedTouches[i].clientY]);
+                }
+            }
+        }
+        e.preventDefault();
+
+    };
+
+    var touchlist = [];
+
+    var lastTouchID = -1; // used for tracking potential taps 
+    var lastTouchStartTime = 0;
+
+    document.ontouchstart = function(e) { doc_ots(e); };
+
+    function doc_ots(e) {
+        touchlist = (e.touches);
+        //	for (var i =0;i<touchlist.length;++i) { 
+        //		console.log(i+": "+touchlist[i].identifier+" at "+touchlist[i].clientX+","+touchlist[i].clientY);
+        //	}
+
+        if (e.touches.length == 1) { // set this finger as control
+            control_finger_id = e.touches[0].identifier;
+            // initialize control_location 
+            control_location = [e.touches[0].clientX, e.touches[0].clientY];
+            // initialize control_accum
+            control_accum = [0, 0];
         }
 
-        // required to make the range actually settable 
-        updateSizing();
-    }
+        if (e.changedTouches.length == 1) {
+            lastTouchID = e.changedTouches[0].identifier;
+            lastTouchStartTime = new Date().getTime();
+        }
 
-    window.onload = function() { win_onload(); };
+        drawTouches();
+
+    };
+
+    var control_finger_id = -1;
+    var control_location = [-1, -1]; // last location: -1 indicates undefined
+
+    document.ontouchend = function(e) { doc_ote(e); };
+
+    function doc_ote(e) {
+        touchlist = e.touches;
+        for (var i = 0; i < e.changedTouches.length; i++) {
+            if (e.changedTouches[i].identifier == control_finger_id) {
+                // Easy way out: defer control to first of remaining fingers
+                if (e.touches.length > 0) {
+                    control_finger_id = e.touches[0].identifier;
+                    control_location = [e.touches[0].clientX, e.touches[0].clientY];
+                } else {
+                    control_finger_id = -1;
+                    control_location = control_accum = [-1, -1];
+                }
+                //break;
+                //entry point for hard drop 
+                hardDropTest(e.changedTouches[i].clientX, e.changedTouches[i].clientY);
+            }
+            if (!paused && e.changedTouches[i].identifier == lastTouchID && new Date().getTime() - lastTouchStartTime < 300) {
+                moves[4]();
+            }
+        }
+        drawTouches();
+    };
+
+
+    // document.ontouchend  document.ontouch
+
+
+
+    window.onselectstart = function(e) { return false; }
+        // no IE
+    window.onresize = function() { win_onresize(); };
+
+    function win_onresize() {
+        updateSizing();
+    };
+
+
+    // HERE IS THE API
 
     this.isPaused = function() { return isPaused(); };
-    this.setPause = function() { setPause(); };
+    this.setPause = function() { setPause(false); };
     this.unPause = function() { unPause(); };
     this.setTouchSensitivity = function(value) {
             yMoveThreshold = xMoveThreshold = 30.0 / value;
@@ -1332,7 +1298,7 @@ var TETRIS = new function() { // namespacing
     this.toggle_touch_draw = function() { actually_draw_touches = !actually_draw_touches; return actually_draw_touches; };
     this.setScoreIncreasing = function() {
         isScoreIncreasing = true;
-        player_score = 0;
+        score = 0;
     };
     this.scoreChangeCallback = function(cb) { scoreCallback = cb; };
 

@@ -1,13 +1,16 @@
 body {
     overflow: hidden;
-    font-family: 'Georgia', 'Arial', sans-serif;
+    /* font-family: 'Georgia', 'Arial', sans-serif; */
     font-size: 100%;
     color: #B0B0B0;
-    background-color: rgba(0,172,167,1);
+    /* background-color: rgba(0,172,167,1); */
     /*	margin: 1em;
 	padding: 3em 3em 5em 6em;
 	border: thin solid black */
     /*-webkit-text-size-adjust: none;  Fix iphone font size changing */
+    background-image: url(../image/background/8.jpg);
+    background-size: cover;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 #player {
@@ -33,31 +36,55 @@ body {
     float: left;
 }
 
-table {
-    width: 30%;
-    border: 2px solid white;
-    background-color: #333;
+.styled-table {
     border-collapse: collapse;
+    margin: 25px 0;
+    font-family: sans-serif;
+    border-radius: 2em;
+    overflow: hidden;
 }
 
-th {
-    width: 50%;
-    height: 70px;
-    padding-left: 10px;
-    padding-right: 10px;
+#score_check>thead th,
+#score_check>tbody th {
+    width: 30%;
+    background-color: rgba(0, 172, 168, 1.0);
+    color: #ffffff;
     text-align: left;
-    font-size: 30px;
-    border: 2px solid #555555;
-    white-space: nowrap;
 }
 
-td {
-    text-align: right;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 30px;
-    border: 2px solid #555555;
-    white-space: nowrap;
+#opponent_check>thead th,
+#opponent_check>tbody th {
+    width: 30%;
+    background-color: rgba(255, 0, 44, 1.0);
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 1em;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+#score_check>thead td,
+#score_check>tbody td {
+    background-color: #f3f3f3;
+}
+
+#opponent_check>thead td,
+#opponent_check>tbody td {
+    background-color: #f3f3f3;
+}
+
+#score_check.styled-table>tbody {
+    border-bottom: 2px solid rgba(0, 172, 168, 1.0);
+}
+
+#opponent_check.styled-table>tbody {
+    border-bottom: 2px solid rgba(255, 0, 44, 1.0);
 }
 
 #opponent_board {
@@ -69,7 +96,7 @@ td {
 #opponent_check {
     position: absolute;
     font-family: Sans-serif;
-    font-size: 7vw
+    font-size: 1.5vw
 }
 
 p {
@@ -290,7 +317,21 @@ div.currently ul {
 }
 
 #instructions {
-    padding: 20px;
+    padding-top: 10vh;
+    padding-left: 3vh;
+}
+
+#instructions>input {
+    border-radius: 2em;
+    width: 10vw;
+    height: 8vh;
+    font-size: 3vh;
+    color: #fff;
+    background: black;
+    border: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
 div.message {
@@ -306,15 +347,6 @@ div.message .user {
     color: blue;
 }
 
-input {
-    background-color: #353535;
-    border: solid #555555 2px;
-    color: #b0b0b0;
-    width: 100px;
-    height: 50px;
-    left: 100px;
-}
-
 select {
     background-color: #353535;
     border: 2px solid #555555;
@@ -324,6 +356,19 @@ select {
 
 label {
     margin: 0px 2px;
+}
+
+@keyframes textAnimation {
+    0% {
+        transform: scale(1, 1);
+    }
+    30% {
+        transform: scale(2, 2);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0, 0);
+    }
 }
 
 textarea {

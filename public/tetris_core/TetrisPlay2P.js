@@ -122,6 +122,7 @@ function drawBoard(boardArr, context) {
     }
 }
 var positionFromLeft = 0;
+var positionFromTop = 50;
 
 function updateSizing() {
     xsize = ysize = Math.floor((window.innerHeight - 25 - yoff * 2 - 24 * gapsize) / 24.0);
@@ -144,10 +145,12 @@ function updateSizing() {
     // note -- window.innerWidth/Height not supported by IE
     bc.style.left = ac.style.left = sc.style.left = positionFromLeft + 10 + "px";
 
-    score_oppo.style.width = window.innerWidth / 8 + 'px';
+    score_oppo.style.width = window.innerWidth / 6 + 'px';
     score_oppo.style.left = positionFromLeft - oppo.width - window.innerWidth * 0.17 - 20 + 'px';
-    score_el.style.width = window.innerWidth / 16 + 'px';
+    score_el.style.width = window.innerWidth / 6 + 'px';
     score_el.style.left = positionFromLeft + bc.width + 20 + "px";
+    score_el.style.top = positionFromTop + 'px';
+    score_oppo.style.top = positionFromTop + 'px';
 
     var ctx1 = document.getElementById('player_board').getContext('2d');
     drawBoard(board, ctx1);
