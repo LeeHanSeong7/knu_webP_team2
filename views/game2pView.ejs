@@ -58,6 +58,18 @@
             animation: shrink 1.5s forwards;
             animation-play-state:paused;
         }
+        #count{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            transform: translate(-100px,-100px);
+            font-size: 10rem;
+            text-align: center;
+            top:50%;
+            left:50%;
+            z-index: 5;
+            color: orange;
+        }
         @keyframes shrink {
             0%{
                 transform: scale(15,15);
@@ -82,6 +94,7 @@
 
 <body>
     <div id="effect"></div>
+    <div id="count"></div>
     <div class="watingDiv">
         <div class="watingText">...Waiting...</div>
         <input type="button" id="quit" value="Quit" style="z-index: 7;" onclick="gameQuitOnclick()">
@@ -146,6 +159,19 @@
                     gameDiv.style.display = 'block';
                     document.getElementById('opponent_id').innerHTML=callback_args["userid"];              
                     document.getElementById('player_id').innerHTML=callback_args["opponent"];
+                    const count = document.getElementById('count');
+                    let i=2;
+                    count.innerText = 1;
+                    const timerid = setInterval(()=>{
+                        if (i == 4) {
+                            clearInterval(timerid);
+                            count.innerText = '';
+                        }
+                        else{
+                            count.innerText = i;
+                            i += 1;
+                        }
+                    },1000);
                     setTimeout(()=>{
                         TETRIS.unPause();
                         TETRIS.setScoreIncreasing();

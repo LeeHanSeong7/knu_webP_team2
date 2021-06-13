@@ -43,8 +43,7 @@ module.exports = (req,res) => {
                     "lastConnect" : match.lastConnect,
                 });
             }
-            else{           
-                deleteMatch(matchId,opponent);     
+            else{                
                 res.json({
                     "res" : "true",
                     "status" : "opponent_timeOut"
