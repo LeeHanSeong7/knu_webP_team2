@@ -322,13 +322,13 @@ div.currently ul {
 }
 
 #instructions>input {
-    opacity: 20%;
     border-radius: 2em;
     width: 12vw;
     height: 8vh;
     font-size: 3vh;
-    color: #fff;
-    border: 0;
+    color: rgba(53, 53, 53, 1.0);
+    background-color: white;
+    border: solid 5px rgba(53, 53, 53, 1.0);
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
@@ -339,26 +339,27 @@ div.currently ul {
 }
 
 #instructions>input:hover {
-    opacity: 100%;
+    color: white;
+    background-color: rgba(53, 53, 53, 1.0);
 }
 
 #quit {
-    opacity: 20%;
     border-radius: 2em;
     width: 12vw;
     height: 8vh;
     text-align: center;
     font-size: 3vh;
-    color: #fff;
-    background: rgba(255, 0, 44, 1.0);
-    border: 0;
+    color: rgba(255, 0, 44, 1.0);
+    background: white;
+    border: solid 5px rgba(255, 0, 44, 1.0);
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
 #quit:hover {
-    opacity: 100%;
+    color: white;
+    background: rgba(255, 0, 44, 1.0);
 }
 
 div.message {
