@@ -19,9 +19,6 @@
 
     <link rel="stylesheet" href="/tetris_core/page.css" type="text/css" />
     <script src='/tetris_core/TetrisPlay2P.js' type="text/javascript"></script>
-    <script type='text/javascript'>
-        TETRIS.setScoreIncreasing();
-    </script>
 
     <script src="/scripts/playOnServer.js"></script>
     <script>
@@ -41,7 +38,7 @@
         <table id="opponent_check">
             <tr>
                 <th>ID </th>
-                <td id="opponent_id">1234</th>
+                <td id="opponent_id"></th>
             </tr>
             <tr>
                 <th>SCORE </th>
@@ -52,7 +49,7 @@
         <table id="score_check">
             <tr>
                 <th>ID </th>
-                <td id="player_id">1234</td>
+                <td id="player_id"></td>
             </tr>
             <tr>
                 <th>SCORE </th>
@@ -61,18 +58,10 @@
             </tr>
         </table>
         <!-- canvas -->
-        <div id="opponent" style="
-            display: flex;
-            flex-direction: column;
-        ">
-            <h2 id="userid"></h2>
+        <div id="opponent">
             <canvas id="opponent_board" width="500" height="1200"></canvas>
         </div>
-        <div id="player" style="
-        display: flex;
-        flex-direction: column;
-        ">
-            <h2 id="userid"></h2>
+        <div id="player">
             <canvas id="player_board" width="500" height="1200"></canvas>
             <canvas id="player_shadow" width="500" height="1200"></canvas>
             <canvas id="player_animated" width="500" height="1200"></canvas>
@@ -92,11 +81,12 @@
         playOnServer((callback_args)=>{
             switch(callback_args['status']){
                 case ('gaming'):
+                    TETRIS.setScoreIncreasing();
                     watingDiv.innerHTML = callback_args['msg'];
                     watingDiv.style.display = 'none';
                     gameDiv.style.display = 'block';
-                    //gameDiv.querySelector("#player").querySelector('#userid').innerHTML=callback_args["userid"]                  
-                    //gameDiv.querySelector("#opponent").querySelector('#userid').innerHTML=callback_args["opponent"]
+                    document.getElementById('opponent_id').innerHTML=callback_args["userid"]                  
+                    document.getElementById('player_id').innerHTML=callback_args["opponent"]
                      break;
                 case ('join fail'):
                     gameQuitOnclick();

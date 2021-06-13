@@ -29,16 +29,19 @@
 <body>
 
     <!-- score -->
-    <table id="score_check">
-        <tr>
-            <th>ID </th>
-            <td id="player_id">1234</td>
-        </tr>
-        <tr>
-            <th>SCORE </th>
-            <td id="player_score"></td>
-        </tr>
-        </tr>
+    <table id="score_check" class="styled-table">
+        <thead>
+            <tr>
+                <th>ID </th>
+                <td id="player_id">1234</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>SCORE </th>
+                <td id="player_score"></td>
+            </tr>
+        </tbody>
     </table>
 
 
@@ -52,9 +55,7 @@
 
     <!-- pause -->
     <div id="instructions" style="position: relative">
-        <div id='controls' style="float: left">
-            <input type="button" onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value="Pause" style="font-size: 150%">
-        </div>
+        <input type="button" onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value="Pause">
     </div>
 </body>
 
