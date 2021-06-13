@@ -55,7 +55,7 @@
 
     <!-- pause -->
     <div id="instructions" style="position: relative">
-        <input type="button" id='pause' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value="Pause">
+        <input type="button" id='pause' onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(false); this.blur();  }" value="Pause">
         <p/>
         <input type="button" id="quit" value="Quit">
     </div>
