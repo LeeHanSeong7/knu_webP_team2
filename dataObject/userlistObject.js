@@ -35,6 +35,18 @@ function sayToUsers(userid,str){
 function logout(userid){
     delete userList[userid];
 }
+const timeout = 300000;
+
+setInterval(()=>{
+    const users = Object.keys(userList);
+    users.forEach((user)=>{
+        const now = new Date().getTime();
+        const last = new Date(userList[user].lastConnect).getTime();
+        if (now - last > timeout){
+            delete userList[user];
+        }
+    });
+},timeout);
 
 module.exports = {
     userList,
