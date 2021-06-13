@@ -28,10 +28,10 @@
             listContents.style.flex = '1';
             for(let i=0; i<res['data'].length; i++){
                 const newOne = document.createElement('div');
-                newOne.style.fontSize = '30px';
+                newOne.style.fontSize = '25px';
                 newOne.style.wordWrap = 'break-word';
                 newOne.style.borderBottom = '1px solid rgba(0,172,167,1)';
-                newOne.innerText = res['data'][i];
+                newOne.innerText = `u- ${res['data'][i]}`;
                 listContents.appendChild(newOne);
             }
             userlist_parent.appendChild(listContents);
