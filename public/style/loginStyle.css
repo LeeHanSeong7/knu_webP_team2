@@ -34,7 +34,7 @@ a.title:nth-child(2n) {
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 1px;
-    background: rgba(0, 172, 168, 0.05);
+    background: rgba(87, 151, 150, 0.2);
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
@@ -58,7 +58,7 @@ form.form1 {
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 1px;
-    background: rgba(0, 172, 168, 0.05);
+    background: rgba(0, 172, 168, 0.2);
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
