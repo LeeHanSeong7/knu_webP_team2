@@ -1,49 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tetris</title>
-    <link rel="stylesheet" href="/style/defaultStyle.css">
-    <style>
-        div {
-            text-align: center;
-        }
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta name="keywords" content="steven lu, tetris, game, free, javascript, html5, browser, native, iOS, iPhone, iPad, iPad 2, Android, webkit, opera, chrome, touch, safari" />
+    <meta name="description" content="This is a HTML5 tetris game that has wide browser support. It provides innovative intuitive touch controls for Apple iOS iPhone iPad products and also Android devices. " />
 
-        .score {
-            position: relative;
-            font-size: 24px;
-            margin-bottom: 1rem;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-        }
+    <title>Tetris!</title>
 
-        .level {
-            position: relative;
-            font-size: 24px;
-            margin-bottom: 1rem;
-        }
+    <script src="strokeText.js"></script>
 
-        p {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 15rem;
-            margin-bottom: 15rem;
-        }
+    <link rel="stylesheet" href="page.css" type="text/css" />
+    <script src='TetrisPlay1P.js' type="text/javascript"></script>
+    <script type='text/javascript'>
+        TETRIS.setScoreIncreasing();
+    </script>
+    <style></style>
 
-        button {
-            font-size: 18px;
-            margin-bottom: 1rem;
-        }
-    </style>
 </head>
 
+
 <body>
-    <div>
-            
+
     <!-- score -->
-    <div id="score_check"> <span id="player_score">0</span></div>
+    <table id="score_check">
+        <tr>
+            <th>ID </th>
+            <td id="player_id">1234</td>
+        </tr>
+        <tr>
+            <th>SCORE </th>
+            <td id="player_score"></td>
+        </tr>
+        </tr>
+    </table>
 
 
     <!-- canvas -->
@@ -59,7 +55,6 @@
         <div id='controls' style="float: left">
             <input type="button" onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value="Pause" style="font-size: 150%">
         </div>
-    </div>
     </div>
 </body>
 

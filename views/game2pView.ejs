@@ -38,9 +38,28 @@
     </div>
     <div class="gameDiv">
         <!-- score -->
-        <div id="score_check"> <span id="opponent_score">0</span></div>
-        <div id="score_check"> <span id="player_score">0</span></div>
-
+        <table id="opponent_check">
+            <tr>
+                <th>ID </th>
+                <td id="opponent_id">1234</th>
+            </tr>
+            <tr>
+                <th>SCORE </th>
+                <td id="opponent_score">
+            </tr>
+            </tr>
+        </table>
+        <table id="score_check">
+            <tr>
+                <th>ID </th>
+                <td id="player_id">1234</td>
+            </tr>
+            <tr>
+                <th>SCORE </th>
+                <td id="player_score"></td>
+            </tr>
+            </tr>
+        </table>
         <!-- canvas -->
         <div id="opponent" style="
             display: flex;
@@ -84,18 +103,23 @@
                      break;
                 case ('updated'):
                     let data = callback_args['data'];
-                    DrawOpponent(data['isOver'],data['score'],data['board']);
-                    args[0] = {
-                        "board" : board,
-                        "score" : player_score,
-                        "isOver" : player_over,
-                    };
+                    if (data !== null){
+                        DrawOpponent(data['isOver'],data['score'],data['board']);
+                        args[0] = {
+                            "board" : board,
+                            "score" : player_score,
+                            "isOver" : player_over,
+                        };
+                    }
                      break;
                 case ('opponent disconnected'):
-                    gameQuitOnclick();
+                    DrawOpponent(true,0,null);
+
+                    //gameQuitOnclick();
                      break;
                 case ('match ended'):
-                    gameQuitOnclick();
+                    DrawOpponent(true,0,null);
+                    //gameQuitOnclick();
                      break;
                 default:
                     break;         
