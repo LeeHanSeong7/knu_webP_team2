@@ -322,16 +322,43 @@ div.currently ul {
 }
 
 #instructions>input {
+    opacity: 20%;
     border-radius: 2em;
-    width: 10vw;
+    width: 12vw;
     height: 8vh;
     font-size: 3vh;
     color: #fff;
-    background: black;
     border: 0;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+#pause {
+    background: black;
+}
+
+#instructions>input:hover {
+    opacity: 100%;
+}
+
+#quit {
+    opacity: 20%;
+    border-radius: 2em;
+    width: 12vw;
+    height: 8vh;
+    text-align: center;
+    font-size: 3vh;
+    color: #fff;
+    background: rgba(255, 0, 44, 1.0);
+    border: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+#quit:hover {
+    opacity: 100%;
 }
 
 div.message {

@@ -144,6 +144,7 @@ function updateSizing() {
     // this is to set the absolute positioning in the center of the window.
     // note -- window.innerWidth/Height not supported by IE
     bc.style.left = ac.style.left = sc.style.left = positionFromLeft + 10 + "px";
+    document.getElementById('instructions').style.left = positionFromLeft + bc.width + 10 + "px";
 
     score_oppo.style.width = window.innerWidth / 6 + 'px';
     score_oppo.style.left = positionFromLeft - oppo.width - window.innerWidth * 0.17 - 20 + 'px';
@@ -152,6 +153,7 @@ function updateSizing() {
     score_el.style.top = positionFromTop + 'px';
     score_oppo.style.top = positionFromTop + 'px';
 
+    document.getElementById('instructions').style.top = positionFromTop + score_el.clientHeight + "px";
     var ctx1 = document.getElementById('player_board').getContext('2d');
     drawBoard(board, ctx1);
     updatePiece();

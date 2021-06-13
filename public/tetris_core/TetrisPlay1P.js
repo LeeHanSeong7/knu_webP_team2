@@ -149,7 +149,6 @@ function updateSizing() {
 
     document.getElementById('instructions').style.top = positionFromTop + score_el.clientHeight + "px";
 
-
     var ctx1 = document.getElementById('player_board').getContext('2d');
     drawBoard(board, ctx1);
     updatePiece();
