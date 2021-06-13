@@ -5,7 +5,7 @@
         border-top: 5px solid rgba(0,172,167,1); 
         background-color: rgba(217 ,243 , 243);          
         display: flex;
-        flex-direction: column
+        flex-direction: column;
     }
     h2{
         text-align: center;
@@ -24,7 +24,7 @@
         serverInterval('/user/list','POST',(res)=>{
             userlist_parent.removeChild(listContents);
             listContents = document.createElement('div');
-            listContents.style.overflowY = 'scroll';
+            listContents.style.overflowY = 'auto';
             listContents.style.flex = '1';
             for(let i=0; i<res['data'].length; i++){
                 const newOne = document.createElement('div');
