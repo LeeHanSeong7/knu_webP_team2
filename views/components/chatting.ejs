@@ -28,25 +28,27 @@
         let chattingBuffer = [];
 
         function sendChatting(){
-            const chatSend = document.getElementById("chatSend");
             if (event.keyCode == 13){
-                if (chatSend.value.length != 0){
-                    chattingBuffer.push(chatSend.value);
-                    chatSend.value = '';
+                const target = document.getElementById("chatSend");
+                if (target.value.length != 0){
+                    chattingBuffer.push(target.value);
+                    target.value = '';
                 }
             }
         }
-
-        let timerId = setInterval(async ()=>{
-            let res = await fetch('/user/say',{
-                'method':'POST',
-                'headers':{
-                    'Content-Type' : 'application/json',
-                },
-                'body': JSON.stringify({"data": chattingBuffer}),
-            });
-            chattingBuffer = [];
-            res = await res.json();
+        serverInterval('/user/hear','POST',(res)=>{
+            if (chattingBuffer.length != 0){
+                fetch('/user/say',{
+                        'method':'POST',
+                        'headers':{
+                            'Content-Type' : 'application/json',
+                        },
+                        'body':  JSON.stringify({
+                            "data": chattingBuffer.slice()
+                        })
+                    });
+                chattingBuffer = [];
+            }
             res.chatbuf.forEach((chat)=>{
                 let newchatline = document.createElement("div");
                 newchatline.style.fontSize = '20px';
@@ -54,7 +56,7 @@
                 newchatline.innerText = `   ${chat.user} : ${chat.text}`;
                 chattingLog_parent.appendChild(newchatline);
             })
-        },100);
+        }, null, 100)
     </script>
     <input id="chatSend" type="text" value='' onkeydown="sendChatting();">
 </div>

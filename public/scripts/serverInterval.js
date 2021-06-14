@@ -8,7 +8,6 @@ async function serverInterval(route,method,callback, args, interval){
             callback(res);
         }
         else{
-            console.log(args[0]["data"]);
             let res = await fetch(route,{
                 'method':method,
                 'headers':{
@@ -16,7 +15,6 @@ async function serverInterval(route,method,callback, args, interval){
                 },
                 'body': JSON.stringify(args[0]),
             });
-            args[0]["data"] = [];
             res = await res.json();
             callback(res);
         }
