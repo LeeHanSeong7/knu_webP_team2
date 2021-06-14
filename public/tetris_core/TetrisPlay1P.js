@@ -884,6 +884,8 @@ for (i = 0; i < buttonList.length; ++i) buttonStates[i] = 0;
 
 var setPause = function(isendgame) {
     //console.log("setPause invoked", paused);
+    var mouseP = document.getElementById('pause');
+    mouseP.blur();
     if (paused) return;
     clearInterval(autoMoveDownInterval);
     autoMoveDownInterval = "";
