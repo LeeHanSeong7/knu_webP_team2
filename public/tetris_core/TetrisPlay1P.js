@@ -636,10 +636,7 @@ moves = [
         pieceY += 1;
         if (isPieceInside()) {
             pieceY -= 1;
-            setTimeout(() => {
-                setpau
-                fixPiece();
-            }, 1000);
+            fixPiece();
         } else {
             pieceY -= 1;
         }
