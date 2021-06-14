@@ -44,7 +44,7 @@ module.exports = (req,res) => {
                 });
             }
             else{                
-                match.gameData[opponent]['isOver'] == true;
+                deleteMatch(matchId,opponent);
                 res.json({
                     "res" : "true",
                     "status" : "opponent_timeOut"
