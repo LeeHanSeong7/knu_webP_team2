@@ -105,7 +105,7 @@
             <thead>
                 <tr>
                     <th>ID </th>
-                    <td id="opponent_id">1234</td>
+                    <td id="opponent_id"></td>
                 </tr>
             </thead>
             <tbody>
@@ -119,7 +119,7 @@
             <thead>
                 <tr>
                     <th>ID </th>
-                    <td id="player_id">1234</td>
+                    <td id="player_id"></td>
                 </tr>
             </thead>
             <tbody>
@@ -157,8 +157,8 @@
                     watingDiv.innerHTML = callback_args['msg'];
                     watingDiv.style.display = 'none';
                     gameDiv.style.display = 'block';
-                    document.getElementById('opponent_id').innerHTML=callback_args["userid"];              
-                    document.getElementById('player_id').innerHTML=callback_args["opponent"];
+                    document.getElementById('opponent_id').innerHTML=callback_args["opponent"];              
+                    document.getElementById('player_id').innerHTML=callback_args["userid"];
                     const count = document.getElementById('count');
                     let i=2;
                     count.innerText = 1;
