@@ -4,25 +4,32 @@
 <head>
     <title>LOBBY</title>
     <script>
-            function game1pOnclick(event){
-                setTimeout(()=>{
-                    location.href="/game/1p";
-                },300);
-            }
-            function game2pOnclick(event){
-                // let target = event.target;
-                // target.style["width"]="300vw";
-                // target.style.display = "fixed";
-                // target.style["height"]="300vh";
-                // target.style.z=1;
-                setTimeout(()=>{
-                    location.href="/game/2p";
-                },300);
-            }
+        function game1pOnclick(event){
+            setTimeout(()=>{
+                location.href="/game/1p";
+            },300);
+            const effect = document.getElementById("effect1");
+            const text = document.getElementById("buttontext1");
+            effect.style.animationPlayState="running";
+            text.style.animationPlayState="running";
+            text.style.zIndex=3;
+        }
+        function game2pOnclick(event){
+            setTimeout(()=>{
+                location.href="/game/2p";
+            },300);
+            const effect = document.getElementById("effect2");
+            const text = document.getElementById("buttontext2");
+            effect.style.animationPlayState="running";
+            text.style.animationPlayState="running";
+            text.style.zIndex=3;
+        }
     </script>    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src='/scripts/serverInterval.js'></script>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="/style/defaultStyle.css">
     <style>
         body {
@@ -34,22 +41,40 @@
             text-align: center;
         }
         .StartButton {
-            width: 250px;
-            height: 50%;
+            width: 200px;
+            height: 200px;
             font-size: 2rem;
             display: flex;
             flex-direction: row;
             align-self: center;
             background-color: white;
             border-radius: 1.0em;
-            margin: 1em;
+            margin: 0em 3em;
             transition: linear 0.25s;
         }
-        .StartButton:hover{
+        .P1{
+            border: solid 5px rgba(255, 0, 44, 1);
+            color:rgba(255, 0, 44, 1);
+        }
+        .P2{
+            border: solid 5px rgba(0,172,167,1);
+            color:rgba(0,172,167,1);
+        }
+        .P1:hover{
+            background-color: rgba(255, 0, 44, 1);
+            color:white;
+            width: 250px;
+            height: 250px;
+            border-radius: 3.0em;
+            font-size: 3rem;
+        }
+        .P2:hover{
             background-color: rgba(0,172,167,1);
-            width: 325px;
-            height: 65%;
-            border-radius: 2.5em;
+            color:white;
+            width: 250px;
+            height: 250px;
+            border-radius: 3.0em;
+            font-size: 3rem;
         }
         #mainContainer{
             display: flex;
@@ -59,8 +84,8 @@
         .chatContainer{
             display: flex;
             flex-direction: row;
-            flex:1;
-            background-color: rgba(122,122,122,0.7);
+            flex:2;
+            max-height: 40%;
         }
         .buttomContainer{
             flex:1;
@@ -70,12 +95,49 @@
             justify-content: center;
         }
         .buttontext{
-            color: black;
             font-weight: bold;
             font-family: 'Ubuntu', sans-serif;
             text-align: center;
             align-self: center;
             width: 100%;
+            animation: textAnimation 0.7s forwards;
+            animation-play-state:paused;
+        }
+        .effect{
+            width: 250px;
+            height: 250px;
+            border-radius: 5.5em;
+            z-index: 2;
+            position:absolute;
+            animation: scaling 0.7s forwards;
+            animation-play-state:paused;
+            transition: linear 0.7s;
+        }
+        #effect1{
+            background-color: rgba(255, 0, 44, 1);
+        }
+        #effect2{
+            background-color: rgba(0,172,167,1);
+        }
+        @keyframes scaling {
+            0%{
+                transform: scale(0,0);
+            }
+            100% {
+                transform: scale(10,10);
+            }
+        }
+        @keyframes textAnimation {
+            0%{
+                transform: scale(1,1);
+            }
+            30% {
+                transform: scale(2,2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0,0);
+            }
         }
     </style>
 </head>
@@ -84,18 +146,20 @@
     <div id="mainContainer">
         <div class="nav"><%- include('./components/navbar') -%></div>
         <div class="buttomContainer">
-            <div class="StartButton 1P"  onclick="game1pOnclick(event)""> 
-                <div class="buttontext">GameStart1p</div>
+            <div class="StartButton P1"  onclick="game1pOnclick(event)""> 
+                <div class="buttontext" id="buttontext1">GameStart1p</div>
+                <div class="effect" id="effect1"></div>
             </div>
-            <div class="StartButton 1P"  onclick="game2pOnclick(event)""> 
-                <div class="buttontext">GameStart2p </div>
+            <div class="StartButton P2"  onclick="game2pOnclick(event)""> 
+                <div class="buttontext" id="buttontext2">GameStart2p </div>
+                <div class="effect" id="effect2"></div>
             </div>
         </div>
         <div class="chatContainer">
-            <div style="flex : 2">
+            <div style="flex : 2; max-width: 67%;">
                 <%- include('./components/chatting') -%>
             </div>
-            <div style="flex : 1">
+            <div style="flex : 1; max-width: 33%;">
                 <%- include('./components/userlist') -%>
             </div>
         </div>

@@ -42,6 +42,9 @@ async function playOnServer(callback, args, interval){ // callback = 인터벌 �
                         "msg" : "updated",
                         "data":gameData[opponent],
                     };
+                    if (res["status"] == "ended"){
+                        clearInterval(timerId);
+                    }
                     callback(args[1]);
                 }
                 else{
@@ -49,8 +52,8 @@ async function playOnServer(callback, args, interval){ // callback = 인터벌 �
                         "status":"opponent disconnected",
                         "msg" : "opponent disconnected",
                     }; 
-                    callback(args[1]);
                     clearInterval(timerId);
+                    callback(args[1]);
                 }
             }
             else{
@@ -58,8 +61,8 @@ async function playOnServer(callback, args, interval){ // callback = 인터벌 �
                     "status":"match ended",
                     "msg" : "match ended",
                 }; 
-                callback(args[1]);
                 clearInterval(timerId);
+                callback(args[1]);
             }
         },interval);
     }

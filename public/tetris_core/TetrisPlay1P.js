@@ -5,16 +5,9 @@ var player_score;
 
 var DropDelay = 300;
 
-var MovingSpeedUpdate = setInterval(function() {
-    clearInterval(autoMoveDownInterval);
-    console.log("100")
-    DropDelay -= 10;
-    if (DropDelay >= 70) {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
-    } else {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 70);
-    }
-}, 1000);
+var MovingSpeedUpdate = "";
+
+
 
 function random_det(seed) {
     return function() {
@@ -123,6 +116,7 @@ function drawBoard(boardArr, context) {
     }
 }
 var positionFromLeft = 0;
+var positionFromTop = 50;
 
 
 function updateSizing() {
@@ -132,7 +126,7 @@ function updateSizing() {
     var ac = document.getElementById('player_animated');
     var sc = document.getElementById('player_shadow');
     //var ph = document.getElementById('placeholder');
-    var score_el = document.getElementById('player_score').parentNode;
+    var score_el = document.getElementById('score_check');
     bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
     bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
     //ph.style.height = (yoff*2+ysize*24+gapsize*23)+"px";
@@ -145,14 +139,15 @@ function updateSizing() {
 
     // this is to set the absolute positioning in the center of the window.
     // note -- window.innerWidth/Height not supported by IE
-    positionFromLeft = window.innerWidth / 10 + window.innerWidth / 5; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
+    positionFromLeft = window.innerWidth * 0.38; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
     bc.style.left = ac.style.left = sc.style.left = positionFromLeft + "px";
 
     document.getElementById('instructions').style.left = positionFromLeft + bc.width + 10 + "px";
     score_el.style.left = positionFromLeft + bc.width + 10 + "px";
+    score_el.style.width = window.innerWidth / 6 + 'px';
+    score_el.style.top = positionFromTop + 'px';
 
-    document.getElementById('instructions').style.top = score_el.clientHeight + "px";
-
+    document.getElementById('instructions').style.top = positionFromTop + score_el.clientHeight + "px";
 
     var ctx1 = document.getElementById('player_board').getContext('2d');
     drawBoard(board, ctx1);
@@ -636,6 +631,8 @@ moves = [
     // left
     function() {
         if (freezeInteraction) return;
+        pieceX -= 1;
+        if (isPieceInside()) pieceX += 1;
         pieceY += 1;
         if (isPieceInside()) {
             pieceY -= 1;
@@ -643,8 +640,6 @@ moves = [
         } else {
             pieceY -= 1;
         }
-        pieceX -= 1;
-        if (isPieceInside()) pieceX += 1;
         shiftright = 0;
         updateShadow();
         clearLockTimer();
@@ -659,6 +654,8 @@ moves = [
     // right
     function() {
         if (freezeInteraction) return;
+        pieceX += 1;
+        if (isPieceInside()) pieceX -= 1;
         pieceY += 1;
         if (isPieceInside()) {
             pieceY -= 1;
@@ -666,8 +663,6 @@ moves = [
         } else {
             pieceY -= 1;
         }
-        pieceX += 1;
-        if (isPieceInside()) pieceX -= 1;
         shiftright = 1;
         updateShadow();
         clearLockTimer();
@@ -680,6 +675,7 @@ moves = [
             pieceY -= 1;
             fixPiece();
         }
+        updateShadow();
         clearLockTimer();
     },
     // rotate clockwise
@@ -885,6 +881,8 @@ for (i = 0; i < buttonList.length; ++i) buttonStates[i] = 0;
 
 var setPause = function(isendgame) {
     //console.log("setPause invoked", paused);
+    var mouseP = document.getElementById('pause');
+    mouseP.blur();
     if (paused) return;
     clearInterval(autoMoveDownInterval);
     autoMoveDownInterval = "";
@@ -920,9 +918,20 @@ function isPaused() {
 
 
 function unPause() {
-    if (!paused) return;
+    if (!paused || player_over) return;
+    if (MovingSpeedUpdate == "") {
+        MovingSpeedUpdate = setInterval(function() {
+            console.log(DropDelay)
+            DropDelay -= 20;
+            if (DropDelay < 100) {
+                DropDelay = 100;
+            }
+            clearInterval(autoMoveDownInterval)
+            autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
+        }, 5000);
+    }
     if (autoMoveDownInterval == "") {
-        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300);
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, DropDelay);
     }
     if (animationUpdateInterval == "") {
         animationUpdateInterval = setInterval(animationUpdateIntervalFunc, 16);
@@ -946,7 +955,7 @@ function keydownfunc(e) {
     //document.title = keynum;
 
     if (keychar == 'P') {
-        if (paused) unPause();
+        if (paused && !player_over) unPause();
         else { setPause(false); return; }
     }
     if (paused) return;
@@ -1295,7 +1304,6 @@ var TETRIS = new function() { // namespacing
         next();
         applyScore(0); // to init
         setPause(false);
-        unPause();
 
         var animCtx = document.getElementById('player_animated').getContext('2d');
         set_textRenderContext(animCtx);

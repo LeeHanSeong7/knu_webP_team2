@@ -3,4 +3,9 @@ body{
     padding: 0;
     overflow:hidden;
     height: 100vh;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+nav{
+    font-family: 'Ubuntu', sans-serif;
 }

@@ -7,7 +7,7 @@ class match {
         this.members = [startMem];
         this.maxNum = 2;
         this.gameData = {};
-        this.gameData[startMem] = null;
+        this.gameData[startMem] = undefined;
         this.lastConnect = {};
         this.lastConnect[startMem] = new Date();
     };
@@ -17,7 +17,7 @@ class match {
     }
     join(newMem){
         this.members.push(newMem);
-        this.gameData[newMem] = null;
+        this.gameData[newMem] = undefined;
         this.lastConnect[newMem] = new Date();
     }
     update(userid, gameData){
@@ -66,38 +66,42 @@ function myRoom(userid){
     }
     return false;
 }
-function deleteMatch(matchId, caller){
+async function deleteMatch(matchId, caller){
     if (caller === null){}// 매치 자연 삭제
     else if (caller === true){} // 매치 정상종료
     else{ // caller가 비정상 종료, 불이익
         let room = gameRooms[myRoom(caller)];
         let opponent = room.opponents(caller)[0];
         let req = {}
-        if (room.gameData[opponent]['isOver'] === true){
-            req.body = {
-                winner: caller,
-                loser: opponent,
-                winnerScore: room.gameData[caller]['score'],
-                loserScore: room.gameData[opponent]['score'],
-            };
+        if (room.gameData[opponent] != undefined && room.gameData[caller] != undefined){
+            if (room.gameData[opponent]['isOver'] === true){
+                req.body = {
+                    winner: caller,
+                    loser: opponent,
+                    winnerScore: room.gameData[caller]['score'],
+                    loserScore: room.gameData[opponent]['score'],
+                };
+                storeHistory(req,null)
+            }
+            else if(room.gameData[caller]['isOver'] === true){
+                req.body = {
+                    winner: opponent,
+                    loser: caller,
+                    winnerScore: room.gameData[opponent]['score'],
+                    loserScore: room.gameData[caller]['score'],
+                };
+                storeHistory(req,null)
+            }
+            else{    
+                req.body = {
+                    winner: opponent,
+                    loser: caller,
+                    winnerScore: room.gameData[opponent]['score'],
+                    loserScore: 0,
+                };
+                storeHistory(req,null)
+            }
         }
-        else if(room.gameData[caller]['isOver'] === true){
-            req.body = {
-                winner: opponent,
-                loser: caller,
-                winnerScore: room.gameData[opponent]['score'],
-                loserScore: room.gameData[caller]['score'],
-            };
-        }
-        else{    
-            req.body = {
-                winner: opponent,
-                loser: caller,
-                winnerScore: room.gameData[opponent]['score'],
-                loserScore: 0,
-            };
-        }
-        storeHistory(req,null)
     }
     gameRooms[matchId] = undefined;
 }

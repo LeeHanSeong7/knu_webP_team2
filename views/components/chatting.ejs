@@ -1,21 +1,63 @@
-<div id="chatting" style="
-    width: 100%;
-    height: 100%;
-    border: 1px solid black;       
-    display: flex;
-    flex-direction: column;
-">
-    <div class="log" style="
-        overflow-y:scroll;
-        flex: 1;
-    "></div>
-    <div style="
-        height: 50px;
+<style>
+    #chatting{
+        width: 100%;
+        height: 100%;
+        border-top: 5px solid rgba(255, 0, 44, 1);       
+        border-right: 1px solid rgba(53,53, 53, 1);       
+        background-color: rgba(255, 244, 244, 1);
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
         display: flex;
-        flex-direction: row;
-    ">  
-        <input type="text" style="
-            flex: 1;">
-        <button>send</button>
-    </div>
+        flex-direction: column;
+    }
+    #chattingLog{
+        flex: 1;
+        padding-left: 15px;
+        padding-top: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    #chatSend{
+        width: 100%;
+        height: 10%;
+    }
+</style>
+<div id="chatting">
+    <div id="chattingLog"></div>
+    <script>
+        const chattingLog_parent = document.getElementById('chattingLog');
+        let chattingBuffer = [];
+
+        function sendChatting(){
+            const chatSend = document.getElementById("chatSend");
+            if (event.keyCode == 13){
+                if (chatSend.value.length != 0){
+                    chattingBuffer.push(chatSend.value);
+                    chatSend.value = '';
+                }
+            }
+        }
+
+        let timerId = setInterval(async ()=>{
+            let res = await fetch('/user/say',{
+                'method':'POST',
+                'headers':{
+                    'Content-Type' : 'application/json',
+                },
+                'body': JSON.stringify({"data": chattingBuffer}),
+            });
+            chattingBuffer = [];
+            res = await res.json();
+            res.chatbuf.forEach((chat)=>{
+                let newchatline = document.createElement("div");
+                newchatline.style.fontSize = '20px';
+                newchatline.style.wordWrap = 'break-word';
+                newchatline.innerText = `${chat.user} : ${chat.text}`;
+                chattingLog_parent.appendChild(newchatline);
+                chattingLog_parent.scrollTop = chattingLog_parent.scrollHeight;
+            })
+        },100);
+    </script>
+    <input id="chatSend" type="text" value='' onkeydown="sendChatting();">
 </div>

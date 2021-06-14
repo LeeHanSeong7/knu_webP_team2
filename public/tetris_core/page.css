@@ -1,13 +1,16 @@
 body {
     overflow: hidden;
-    font-family: 'Georgia', 'Arial', sans-serif;
+    /* font-family: 'Georgia', 'Arial', sans-serif; */
     font-size: 100%;
     color: #B0B0B0;
-    background-color: #333;
+    /* background-color: rgba(0,172,167,1); */
     /*	margin: 1em;
 	padding: 3em 3em 5em 6em;
 	border: thin solid black */
     /*-webkit-text-size-adjust: none;  Fix iphone font size changing */
+    background-image: url(../image/background/8.jpg);
+    background-size: cover;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 #player {
@@ -33,15 +36,67 @@ body {
     float: left;
 }
 
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-family: sans-serif;
+    border-radius: 2em;
+    overflow: hidden;
+}
+
+#score_check>thead th,
+#score_check>tbody th {
+    width: 30%;
+    background-color: rgba(0, 172, 168, 1.0);
+    color: #ffffff;
+    text-align: left;
+}
+
+#opponent_check>thead th,
+#opponent_check>tbody th {
+    width: 30%;
+    background-color: rgba(255, 0, 44, 1.0);
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 1em;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+#score_check>thead td,
+#score_check>tbody td {
+    background-color: #f3f3f3;
+}
+
+#opponent_check>thead td,
+#opponent_check>tbody td {
+    background-color: #f3f3f3;
+}
+
+#score_check.styled-table>tbody {
+    border-bottom: 2px solid rgba(0, 172, 168, 1.0);
+}
+
+#opponent_check.styled-table>tbody {
+    border-bottom: 2px solid rgba(255, 0, 44, 1.0);
+}
+
 #opponent_board {
     position: absolute;
     z-index: 3;
 }
 
-#score_check {
+#score_check,
+#opponent_check {
     position: absolute;
     font-family: Sans-serif;
-    font-size: 70px
+    font-size: 1.5vw
 }
 
 p {
@@ -110,10 +165,6 @@ em {
 
 li {
     color: #708590;
-}
-
-table {
-    background-color: #111;
 }
 
 pre {
@@ -266,7 +317,49 @@ div.currently ul {
 }
 
 #instructions {
-    padding: 20px;
+    padding-top: 10vh;
+    padding-left: 3vh;
+}
+
+#instructions>input {
+    border-radius: 2em;
+    width: 12vw;
+    height: 8vh;
+    font-size: 3vh;
+    color: rgba(53, 53, 53, 1.0);
+    background-color: white;
+    border: solid 5px rgba(53, 53, 53, 1.0);
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    box-shadow: 0 0 0 4px white;
+}
+
+#pause {
+    background: black;
+}
+
+#instructions>input:hover {
+    color: white;
+    background-color: rgba(53, 53, 53, 1.0);
+}
+
+#quit {
+    border-radius: 2em;
+    width: 12vw;
+    height: 8vh;
+    text-align: center;
+    font-size: 3vh;
+    color: rgba(255, 0, 44, 1.0);
+    background: white;
+    border: solid 5px rgba(255, 0, 44, 1.0);
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    box-shadow: 0 0 0 4px white;
+}
+
+#quit:hover {
+    color: white;
+    background: rgba(255, 0, 44, 1.0);
 }
 
 div.message {
@@ -282,32 +375,6 @@ div.message .user {
     color: blue;
 }
 
-input {
-    background-color: #353535;
-    border: solid #555555 2px;
-    color: #b0b0b0;
-    left: 100px;
-}
-
-table {
-    background-color: #333;
-    border: 2px solid #555555;
-    border-collapse: collapse;
-}
-
-th {
-    border: 1px solid #555555;
-    white-space: nowrap;
-    padding: 1px;
-}
-
-td {
-    background-color: #333;
-    border: 1px solid #555555;
-    white-space: nowrap;
-    padding: 0px;
-}
-
 select {
     background-color: #353535;
     border: 2px solid #555555;
@@ -317,6 +384,19 @@ select {
 
 label {
     margin: 0px 2px;
+}
+
+@keyframes textAnimation {
+    0% {
+        transform: scale(1, 1);
+    }
+    30% {
+        transform: scale(2, 2);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0, 0);
+    }
 }
 
 textarea {

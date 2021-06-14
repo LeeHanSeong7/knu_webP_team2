@@ -17,7 +17,7 @@
     <script src="strokeText.js"></script>
 
     <link rel="stylesheet" href="page.css" type="text/css" />
-    <script src='tetris.js' type="text/javascript"></script>
+    <script src='TetrisPlay2P.js' type="text/javascript"></script>
     <script type='text/javascript'>
         TETRIS.setScoreIncreasing();
     </script>
@@ -29,9 +29,34 @@
 <body>
 
     <!-- score -->
-    <div id="score_check"> <span id="opponent_score">0</span></div>
-    <div id="score_check"> <span id="player_score">0</span></div>
-
+    <table id="opponent_check" class="styled-table">
+        <thead>
+            <tr>
+                <th>ID </th>
+                <td id="opponent_id">1234</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>SCORE </th>
+                <td id="opponent_score"></td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="score_check" class="styled-table">
+        <thead>
+            <tr>
+                <th>ID </th>
+                <td id="player_id">1234</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>SCORE </th>
+                <td id="player_score"></td>
+            </tr>
+        </tbody>
+    </table>
 
     <!-- canvas -->
     <div id="opponent">
@@ -46,7 +71,7 @@
 
     <!-- pause -->
     <div id="instructions" style="position: relative">
-        <div id='controls' style="float: left"></div>
+        <input type="button" id="quit" value="Quit">
     </div>
 </body>
 

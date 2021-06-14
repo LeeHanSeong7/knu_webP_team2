@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('./dataObject/DBObject');
 const app = new express();
 
@@ -6,7 +7,7 @@ const expressSession = require('express-session');
 app.use(expressSession({
     secret: 'keyboard cat'
 }));
-
+app.use(cors());
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
 
@@ -26,6 +27,7 @@ const controllers = {
 const MW = {
     "session" : require('./middleware/sessionChecker'),
     "last" : require('./middleware/lastConnect'),
+    "logout": require('./middleware/sessionDestoryer'),
 }
 
 let port = process.env.PORT;
@@ -38,7 +40,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
-app.get('/',controllers.login);
+app.get('/',MW.logout,controllers.login);
 app.get('/lobby',MW.session,controllers.lobby);
 app.get('/matchRecord',MW.session,controllers.matchRecord);
 app.get('/ranking',MW.session,controllers.ranking);
@@ -58,8 +60,10 @@ function addAuthControl(expressApp){
 }
 function addUserControl(expressApp){
     expressApp.post('/user/list',MW.session,MW.last,require('./controllers/User/userList'));
+    expressApp.post('/user/say',MW.session,MW.last,require('./controllers/User/newChat'));
+    expressApp.post('/user/hear',MW.session,MW.last,require('./controllers/User/getChat'));
     expressApp.get('/user/touch',MW.session,MW.last);
-    expressApp.get('/user/logout',MW.session,MW.last,require('./controllers/User/logout'));
+    expressApp.get('/user/logout',MW.logout,require('./controllers/User/logout'));
     expressApp.post('/user/mysession',MW.session,require('./controllers/User/mySession'));
 }
 function addGameControl(expressApp){

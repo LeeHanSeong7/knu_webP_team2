@@ -29,17 +29,22 @@ module.exports = (req,res) => {
             let opponent = match.opponents(req.session.userid)[0];
             const myTime = new Date(match.lastConnect[req.session.userid]).getTime();
             const targetTime = new Date(match.lastConnect[opponent]).getTime();
+            let status = null;
+            if ((match.gameData[opponent] !== undefined && match.gameData[opponent]['isOver'] === true) 
+            || (match.gameData[req.session.userid] !== undefined && match.gameData[req.session.userid]['isOver'] === true)){
+                status = "ended";
+            }
             if (myTime - targetTime < waitTime){
                 res.json({
                     "res" : "true",
-                    "status" : req.session.status,
+                    "status" : status,
                     "opponent" : opponent,
                     "gameData" : match.gameData,
                     "lastConnect" : match.lastConnect,
                 });
             }
-            else{           
-                deleteMatch(matchId,opponent);     
+            else{                
+                deleteMatch(matchId,opponent);
                 res.json({
                     "res" : "true",
                     "status" : "opponent_timeOut"

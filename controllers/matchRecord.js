@@ -9,6 +9,7 @@ module.exports = async (req,res) => {
     histories.sort((a, b) =>{
         return (b.Date - a.Date);
     })
+    const userid = req.session.userid;
 
-    res.render(config.viewPath+'matchRecordView.ejs', {histories});
+    res.render(config.viewPath+'matchRecordView.ejs', {histories, userid});
 }
