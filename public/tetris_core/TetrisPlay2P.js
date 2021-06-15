@@ -1,9 +1,25 @@
 var board;
+var player_over = false;
+var player_score;
 
-function DrawOpponent(opponent_board) {
+function DrawOpponent(opponent_over, opponent_score, opponent_board) {
     var ctx1 = document.getElementById('opponent_board').getContext('2d');
+    document.getElementById("opponent_score").innerHTML = opponent_score
+    if (opponent_over) {
+        gameWin();
+    }
     drawBoard(opponent_board, ctx1);
 }
+
+var MovingSpeedUpdate = setInterval(function() {
+    var oppo_score = document.getElementById("opponent_score").innerHTML;
+    clearInterval(autoMoveDownInterval);
+    if (300 - parseInt(oppo_score / 8) >= 30) {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 300 - parseInt(oppo_score / 10));
+    } else {
+        autoMoveDownInterval = setInterval(moveDownIntervalFunc, 30);
+    }
+}, 1000);
 
 function random_det(seed) {
     return function() {
@@ -59,7 +75,7 @@ function random_perm_single(seed) {
     };
 }
 
-board = new Array(24);
+board = new Array();
 var i = 0;
 var j = 0;
 for (i = 0; i < 24; i++) {
@@ -121,31 +137,28 @@ function updateSizing() {
     var ac = document.getElementById('player_animated');
     var sc = document.getElementById('player_shadow');
     //var ph = document.getElementById('placeholder');
-    var score_el = document.getElementById('score').parentNode;
+    var score_oppo = document.getElementById('opponent_score').parentNode;
+    var score_el = document.getElementById('player_score').parentNode;
     oppo.width = bc.width = ac.width = sc.width = (xoff * 2 + xsize * 10 + gapsize * 9);
     oppo.height = bc.height = ac.height = sc.height = (yoff * 2 + ysize * 24 + gapsize * 23);
-    oppo.style.left = window.innerWidth / 8 + 'px';
+    oppo.style.left = window.innerWidth / 5 + 'px';
     //ph.style.height = (yoff*2+ysize*24+gapsize*23)+"px";
     //ph.style.width = ((xoff*2 + xsize*10 + gapsize*9)+180)+"px";
-
-    console.log('hello')
 
     // this is to set the absolute positioning in the center of the window.
     // note -- window.innerWidth/Height not supported by IE
     positionFromLeft = window.innerWidth / 10 + window.innerWidth / 5 + oppo.width; //Math.floor((window.innerWidth - (xoff*2 + xsize*10 + gapsize*9) - 20)/2.0);
     bc.style.left = ac.style.left = sc.style.left = positionFromLeft + "px";
 
-    document.getElementById('instructions').style.left = positionFromLeft + (bc.width) + "px";
+    score_oppo.style.width = window.innerWidth / 16 + 'px';
+    score_oppo.style.left = window.innerWidth / 5 - window.innerWidth / 16 + "px";
+    score_el.style.width = window.innerWidth / 16 + 'px';
     score_el.style.left = positionFromLeft + bc.width + 10 + "px";
-
-    document.getElementById('instructions').style.top = score_el.clientHeight + "px";
-
 
     var ctx1 = document.getElementById('player_board').getContext('2d');
     drawBoard(board, ctx1);
     updatePiece();
     updateShadow();
-    if (paused) drawPaused();
 }
 
 function clearRowCheck(startrow, numrowsdown) {
@@ -155,7 +168,7 @@ function clearRowCheck(startrow, numrowsdown) {
         var j;
         var full = true;
         for (j = 0; j < 10; j++) {
-            if (!board[startrow + i][j]) full = false;
+            if (startrow + i >= 0 && !board[startrow + i][j]) full = false;
         }
         if (full) {
             numRowsCleared++;
@@ -223,17 +236,6 @@ function toggleMouseControl() {
 
 var paused = false;
 
-
-function drawPaused() {
-    var ctx = document.getElementById("player_animated").getContext('2d');
-    var offset = xoff;
-    var size = (xsize + gapsize * .9) * 2.05;
-    var yoffset = yoff + (xsize + gapsize) * 10;
-    ctx.strokeStyle = "#FFF";
-    ctx.strokeText("PAUSED", offset, yoffset, size, 160);
-    ctx.strokeStyle = "#000";
-    ctx.strokeText("PAUSED", offset, yoffset, size, 100);
-}
 
 
 var control_accum = [-1, -1];
@@ -373,7 +375,7 @@ function drawTouches() { // Not really drawing so much as managing and moving a 
 // all possible cases
 var tetromino_Z = [
     [
-        [1, 1],
+        [1, 1, 0],
         [0, 1, 1]
     ],
     [
@@ -484,7 +486,6 @@ var tetromino_L = [
 ];
 var tetromino_I = [
     [
-        [],
         [7, 7, 7, 7]
     ],
     [
@@ -506,7 +507,7 @@ var tetromino_I = [
     ]
 ];
 // tetromino geometry data
-var tetrominos = [tetromino_Z, tetromino_S, tetromino_J, tetromino_T, tetromino_O, tetromino_L, tetromino_I];
+var tetrominos = [tetromino_Z, tetromino_S, tetromino_J, tetromino_T, tetromino_O, tetromino_L, tetromino_I, ];
 // this is for the rotation animation -- must know where in local
 // grid did the piece rotate around
 // each coordinate is a triple, the first two are x,y, and 
@@ -558,13 +559,14 @@ function gameWin() {
     clearContext(sc.getContext('2d'), sc.width, sc.height);
     var ac = document.getElementById('player_animated');
     clearContext(ac.getContext('2d'), ac.width, ac.height);
-    drawMessage("You Win!", 1.45);
-    setPause(true);
+    drawMessage(" You Win!", 1.45);
+    setPause();
 }
 
 function gameOver() {
     drawMessage("Game Over", 1.45);
-    setPause(true);
+    player_over = true;
+    setPause();
     //Cleanup
 
 }
@@ -634,6 +636,14 @@ moves = [
     // left
     function() {
         if (freezeInteraction) return;
+        pieceY += 1;
+        if (isPieceInside()) {
+            pieceY -= 1;
+            fixPiece();
+        }
+        else{
+            pieceY -= 1;
+        }
         pieceX -= 1;
         if (isPieceInside()) pieceX += 1;
         shiftright = 0;
@@ -650,6 +660,14 @@ moves = [
     // right
     function() {
         if (freezeInteraction) return;
+        pieceY += 1;
+        if (isPieceInside()) {
+            pieceY -= 1;
+            fixPiece();
+        }
+        else{
+            pieceY -= 1;
+        }
         pieceX += 1;
         if (isPieceInside()) pieceX -= 1;
         shiftright = 1;
@@ -669,10 +687,16 @@ moves = [
     // rotate clockwise
     function() {
         if (freezeInteraction) return;
+
         var oldrot = curRotation;
         curRotation = (curRotation + 1) % (tetrominos[curPiece].length);
         if (kick()) curRotation = oldrot;
         else animRotation = -Math.PI / 2.0;
+        pieceY += 1;
+        if (isPieceInside()) {
+            pieceY -= 1;
+            fixPiece();
+        }
         updateShadow();
         clearLockTimer();
     },
@@ -871,10 +895,9 @@ var setPause = function(isendgame) {
     animationUpdateInterval = "";
     clearInterval(mouseControlInterval);
     mouseControlInterval = "";
-    if (!isendgame) {
-        drawPaused();
-        document.title = "Tetris! PAUSED";
-    }
+    clearInterval(MovingSpeedUpdate);
+    MovingSpeedUpdate = "";
+
     paused = true;
     pausedBecauseLostFocus = false; // default this to false
 
@@ -912,10 +935,10 @@ function keydownfunc(e) {
     var keychar = String.fromCharCode(keynum);
     //document.title = keynum;
 
-    if (keychar == 'P') {
-        if (paused) unPause();
-        else { setPause(false); return; }
-    }
+    // if (keychar == 'P') {
+    //     if (paused) unPause();
+    //     else { setPause(false); return; }
+    // }
     if (paused) return;
 
     var i;
@@ -1098,18 +1121,6 @@ posy = e.clientY + document.body.scrollTop
 
 var pausedBecauseLostFocus = false;
 
-function losefocusfunc() {
-    if (paused) return;
-    setPause(false);
-    pausedBecauseLostFocus = true;
-}
-
-function gainfocusfunc() {
-    if (paused && pausedBecauseLostFocus) {
-        unPause();
-    }
-}
-
 function mousedownfunc(e) {
     if (isMouseControl) {
         if (e.which == 1) {
@@ -1119,10 +1130,9 @@ function mousedownfunc(e) {
         }
     }
 }
-var score = 1000;
 var isScoreIncreasing = false;
 
-var scoreCallback = function(val) {}; // I get called when score changes. 
+var scoreCallback = function(val) {}; // I get called when player_score changes. 
 
 function applyScore(amount) {
     if (isScoreIncreasing) {
@@ -1130,28 +1140,28 @@ function applyScore(amount) {
     } else {
         subtractScore(amount);
     }
-    scoreCallback(score);
+    scoreCallback(player_score);
 }
 
 function increaseScore(amount) {
-    score += amount;
-    document.getElementById('score').innerHTML = score;
+    player_score += amount;
+    document.getElementById('player_score').innerHTML = player_score;
 }
 
 function subtractScore(amount) {
-    score -= amount;
-    if (score <= 0) { // reached zero 
+    player_score -= amount;
+    if (player_score <= 0) { // reached zero 
         gameWin();
-        score = 0;
+        player_score = 0;
     }
-    document.getElementById('score').innerHTML = score;
+    document.getElementById('player_score').innerHTML = player_score;
 }
 
 document.onkeydown = function(e) { keydownfunc(e); };
 document.onkeyup = function(e) { keyupfunc(e); };
 document.onmousemove = function(e) { mousemovefunc(e); };
-window.onblur = function() { losefocusfunc(); };
-window.onfocus = function() { gainfocusfunc(); };
+// window.onblur = function() { losefocusfunc(); };
+// window.onfocus = function() { gainfocusfunc(); };
 document.onmousedown = function(e) { mousedownfunc(e); };
 
 // for iOS preventing default scroll
@@ -1274,7 +1284,7 @@ var TETRIS = new function() { // namespacing
     function win_onload() {
         next();
         applyScore(0); // to init
-        setPause(false);
+        setPause();
         unPause();
 
         var animCtx = document.getElementById('player_animated').getContext('2d');
@@ -1292,7 +1302,7 @@ var TETRIS = new function() { // namespacing
     window.onload = function() { win_onload(); };
 
     this.isPaused = function() { return isPaused(); };
-    this.setPause = function() { setPause(false); };
+    this.setPause = function() { setPause(); };
     this.unPause = function() { unPause(); };
     this.setTouchSensitivity = function(value) {
             yMoveThreshold = xMoveThreshold = 30.0 / value;
@@ -1301,7 +1311,7 @@ var TETRIS = new function() { // namespacing
     this.toggle_touch_draw = function() { actually_draw_touches = !actually_draw_touches; return actually_draw_touches; };
     this.setScoreIncreasing = function() {
         isScoreIncreasing = true;
-        score = 0;
+        player_score = 0;
     };
     this.scoreChangeCallback = function(cb) { scoreCallback = cb; };
 
